@@ -1,0 +1,35 @@
+{
+  "name": "markdown-to-atlassian-wiki-markup",
+  "version": "0.0.1",
+  "description": "Convert markdown to atlassian wiki markup",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint src/** --ext .ts",
+    "lint:fix": "eslint src/** --ext .ts --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kenchan0130/markdown-to-atlassian-wiki-markup.git"
+  },
+  "author": "Tadayuki Onishi <tt.tanishi100@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kenchan0130/markdown-to-atlassian-wiki-markup/issues"
+  },
+  "homepage": "https://github.com/kenchan0130/markdown-to-atlassian-wiki-markup#readme",
+  "dependencies": {
+    "marked": "^0.7.0"
+  },
+  "devDependencies": {
+    "@types/marked": "^0.6.5",
+    "@types/node": "^12.6.8",
+    "@typescript-eslint/eslint-plugin": "^1.13.0",
+    "@typescript-eslint/parser": "^1.13.0",
+    "eslint": "^6.1.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "prettier": "^1.18.2",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.3"
+  }
+}
