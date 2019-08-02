@@ -65,7 +65,7 @@ export default class WikiMarkupRenderer extends Renderer {
   }
 
   public blockquote(quote: string): string {
-    return `{quote}${quote}{quote}`;
+    return `{quote}${quote.trim()}{quote}`;
   }
 
   public br(): string {
@@ -73,13 +73,13 @@ export default class WikiMarkupRenderer extends Renderer {
   }
 
   public hr(): string {
-    return "----";
+    return "----\n";
   }
 
-  public link(href: string, title: string, text: string): string {
+  public link(href: string, title: string, text: string | null): string {
     const linkAlias = text || title;
 
-    return linkAlias === "" ? `[${href}]` : `[${linkAlias}|${href}]`;
+    return linkAlias ? `[${linkAlias}|${href}]` : `[${href}]`;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
