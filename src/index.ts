@@ -4,6 +4,6 @@ import WikiMarkupRenderer from "./wikiMarkupRenderer";
 
 const renderer = new WikiMarkupRenderer();
 
-export const markdownToWikiSyntax = (markdown: string): string => {
+export const markdownToAtlassianWikiMarkup = (markdown: string): string => {
   return marked(markdown, { renderer: renderer });
 };
