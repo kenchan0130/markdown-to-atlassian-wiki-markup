@@ -6,8 +6,13 @@ module.exports = {
     "plugin:prettier/recommended",
     "prettier/@typescript-eslint"
   ],
-  plugins: ["@typescript-eslint", "prettier"],
-  env: { node: true, es6: true },
+  plugins: ["@typescript-eslint", "prettier", "jest"],
+  env: {
+    node: true,
+    es6: true,
+    browser: true,
+    "jest/globals": true
+  },
   parser: "@typescript-eslint/parser",
   parserOptions: {
     tsconfigRootDir: ".",
