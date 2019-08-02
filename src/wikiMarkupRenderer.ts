@@ -1,9 +1,10 @@
 import {
-  atlassianSupportLanguageList,
+  AtlassianSupportLanguage,
   markdownToWikiMarkupLanguageMapping
 } from "./language";
 import { Renderer, Slugger } from "marked";
 
+const atlassianSupportLanguageList = Object.values(AtlassianSupportLanguage);
 const atlassianSupportLanguageReduceInitialValue: {
   [key: string]: string;
 } = {};
