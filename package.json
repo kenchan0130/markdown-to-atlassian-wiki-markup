@@ -2,7 +2,7 @@
   "name": "@kenchan0130/markdown-to-atlassian-wiki-markup",
   "version": "1.0.0",
   "description": "Convert markdown to atlassian wiki markup",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "lint": "eslint --max-warnings=0 src/** --ext .ts",
