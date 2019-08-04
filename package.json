@@ -11,6 +11,9 @@
     "preversion": "[ \"$(git symbolic-ref --short HEAD)\" != master ] || [ -n \"$(git status --porcelain)\" ] && exit 1 || true",
     "postversion": "git push origin $(git describe --abbrev=0 --tags) && git push origin master"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kenchan0130/markdown-to-atlassian-wiki-markup.git"
