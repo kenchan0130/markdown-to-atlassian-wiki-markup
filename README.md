@@ -7,7 +7,7 @@
 [![snyk][snyk-image]][snyk-url]
 [![MIT][mit-image]][mit-url]
 
-[npm-image]: https://badgen.net/npm/v/@kenchan0130/markdown-to-atlassian-wiki-markup
+[npm-image]: https://img.shields.io/npm/v/@kenchan0130/markdown-to-atlassian-wiki-markup.svg
 [npm-url]: https://www.npmjs.com/package/@kenchan0130/markdown-to-atlassian-wiki-markup
 
 [travis-image]: https://badgen.net/travis/kenchan0130/markdown-to-atlassian-wiki-markup
