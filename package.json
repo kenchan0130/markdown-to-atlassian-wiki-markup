@@ -1,12 +1,15 @@
 {
-  "name": "markdown-to-atlassian-wiki-markup",
+  "name": "@kenchan0130/markdown-to-atlassian-wiki-markup",
   "version": "0.0.1",
   "description": "Convert markdown to atlassian wiki markup",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint src/** --ext .ts",
+    "build": "tsc",
+    "lint": "eslint --max-warnings=0 src/** --ext .ts",
     "lint:fix": "eslint src/** --ext .ts --fix",
-    "test": "jest"
+    "test": "jest",
+    "preversion": "[ \"$(git symbolic-ref --short HEAD)\" != master ] || [ -n \"$(git status --porcelain)\" ] && exit 1 || true",
+    "postversion": "git push origin $(git describe --abbrev=0 --tags) && git push origin master"
   },
   "repository": {
     "type": "git",
@@ -18,6 +21,13 @@
     "url": "https://github.com/kenchan0130/markdown-to-atlassian-wiki-markup/issues"
   },
   "homepage": "https://github.com/kenchan0130/markdown-to-atlassian-wiki-markup#readme",
+  "keywords": [
+    "Atlassian",
+    "Confluence",
+    "JIRA",
+    "Markdown",
+    "Wiki markup"
+  ],
   "dependencies": {
     "escape-string-regexp": "^2.0.0",
     "marked": "^0.7.0"

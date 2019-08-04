@@ -1,0 +1,28 @@
+language: node_js
+sudo: false
+cache: npm
+jobs:
+  include:
+    - &test
+      stage: test
+      node_js: "12"
+      if: tag IS blank
+      script:
+        - npm run lint
+        - npm run test
+    - <<: *test
+      node_js: "10"
+    - <<: *test
+      node_js: "8"
+    - stage: deploy
+      node_js: "12"
+      if: tag IS present
+      script: npm run build
+      deploy:
+        provider: npm
+        skip_cleanup: true
+        email: $NPM_EMAIL
+        api_key: $NPM_AUTH_TOKEN
+        on:
+          tags: true
+          all_branches: true
