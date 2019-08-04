@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/kenchan0130/markdown-to-atlassian-wiki-markup#readme",
   "dependencies": {
+    "escape-string-regexp": "^2.0.0",
     "marked": "^0.7.0"
   },
   "devDependencies": {

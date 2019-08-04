@@ -3,6 +3,27 @@ import {
   markdownToWikiMarkupLanguageMapping
 } from "./language";
 import { Renderer, Slugger } from "marked";
+import escapeStringRegexp from "escape-string-regexp";
+
+enum CodeBlockTheme {
+  DJango = "DJango",
+  Emacs = "Emacs",
+  FadeToGrey = "FadeToGrey",
+  Midnight = "Midnight",
+  RDark = "RDark",
+  Eclipse = "Eclipse",
+  Confluence = "Confluence"
+}
+
+enum ListHeadCharacter {
+  Numbered = "#",
+  Bullet = "*"
+}
+
+enum TableCellTypeCharacter {
+  Header = "||",
+  NonHeader = "|"
+}
 
 const atlassianSupportLanguageList = Object.values(AtlassianSupportLanguage);
 const atlassianSupportLanguageReduceInitialValue: {
@@ -17,24 +38,15 @@ const convertingSupportLanguageMapping = Object.assign(
     return previousValue;
   }, atlassianSupportLanguageReduceInitialValue)
 );
-
-enum CodeBlockTheme {
-  DJango = "DJango",
-  Emacs = "Emacs",
-  FadeToGrey = "FadeToGrey",
-  Midnight = "Midnight",
-  RDark = "RDark",
-  Eclipse = "Eclipse",
-  Confluence = "Confluence"
-}
+const confluenceListRegExp = new RegExp(
+  `^(${Object.values(ListHeadCharacter)
+    .map(escapeStringRegexp)
+    .join("|")})`
+);
 
 export default class WikiMarkupRenderer extends Renderer {
   public paragraph(text: string): string {
     return `${text}\n\n`;
-  }
-
-  public html(html: string): string {
-    return html;
   }
 
   public heading(
@@ -76,37 +88,53 @@ export default class WikiMarkupRenderer extends Renderer {
     return "----\n";
   }
 
-  public link(href: string, title: string, text: string | null): string {
+  public link(href: string, title: string | null, text: string): string {
     const linkAlias = text || title;
 
     return linkAlias ? `[${linkAlias}|${href}]` : `[${href}]`;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public list(body: string, ordered: boolean, start: number): string {
+  public list(body: string, ordered: boolean, start: number | ""): string {
     const lines = body
       .trim()
       .split("\n")
       .filter((line): boolean => !!line);
-    const type = ordered ? "#" : "*";
+    const type = ordered
+      ? ListHeadCharacter.Numbered
+      : ListHeadCharacter.Bullet;
     const joinedLine = lines
-      .map((line): string => `${type} ${line}`)
+      .map((line): string => {
+        return line.match(confluenceListRegExp)
+          ? `${type}${line}`
+          : `${type} ${line}`;
+      })
       .join("\n");
 
-    return `${joinedLine}\n\n`;
+    return `\n${joinedLine}\n`;
   }
 
   public listitem(body: string): string {
     return `${body}\n`;
   }
 
-  public image(href: string, title: string, text: string): string {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public checkbox(checked: boolean): string {
+    // Confluence wiki does not support checkbox.
+    return "";
+  }
+
+  public image(href: string, title: string | null, text: string): string {
     const params = {
-      title: title,
-      alt: text
+      alt: text,
+      title: title
     };
     const paramsString = Object.entries(params)
-      .filter(([, value]): boolean => value.trim() !== "")
+      .filter(([, value]): boolean => {
+        return value !== null && value.trim() !== "";
+      })
+      // Sort by key to prevent the order from changing in the way of defining params
+      .sort((a, b): number => (a[0] > b[0] ? 1 : -1))
       .map(([key, value]): string => `${key}=${value}`)
       .join(",");
 
@@ -114,11 +142,31 @@ export default class WikiMarkupRenderer extends Renderer {
   }
 
   public table(header: string, body: string): string {
-    return `${header}\n${body}\n`;
+    return `\n${header}${body}\n`;
   }
 
   public tablerow(content: string): string {
-    return `${content}\n`;
+    const removedEscapePipe = content.trim().replace("\\|", "");
+    const twoPipeMatch = removedEscapePipe.match(/\|\|(?!.*\|\|)/);
+    const onePipeMatch = removedEscapePipe.match(/\|(?!.*\|)/);
+    const rowCloseType = ((): TableCellTypeCharacter => {
+      if (!onePipeMatch || !onePipeMatch.index) {
+        throw new Error(
+          "The table row expects at least one '|' in the table cell."
+        );
+      }
+
+      if (twoPipeMatch && twoPipeMatch.index) {
+        const indexDiff = onePipeMatch.index - twoPipeMatch.index;
+        return indexDiff === 1
+          ? TableCellTypeCharacter.Header
+          : TableCellTypeCharacter.NonHeader;
+      }
+
+      return TableCellTypeCharacter.NonHeader;
+    })();
+
+    return `${content}${rowCloseType}\n`;
   }
 
   public tablecell(
@@ -128,7 +176,9 @@ export default class WikiMarkupRenderer extends Renderer {
       align: "center" | "left" | "right" | null;
     }
   ): string {
-    const type = flags.header ? "||" : "|";
+    const type = flags.header
+      ? TableCellTypeCharacter.Header
+      : TableCellTypeCharacter.NonHeader;
 
     return `${type}${content}`;
   }
@@ -137,12 +187,16 @@ export default class WikiMarkupRenderer extends Renderer {
   public code(code: string, language: string, isEscaped: boolean): string {
     const adjustedLang = language ? language.toLowerCase() : language;
     const params = {
-      language: convertingSupportLanguageMapping[adjustedLang] || "none",
+      language:
+        convertingSupportLanguageMapping[adjustedLang] ||
+        AtlassianSupportLanguage.None,
       theme: CodeBlockTheme.Confluence,
       linenumbers: true,
       collapse: false
     };
     const paramsString = Object.entries(params)
+      // Sort by key to prevent the order from changing in the way of defining params
+      .sort((a, b): number => (a[0] > b[0] ? 1 : -1))
       .map(([key, value]): string => `${key}=${value}`)
       .join("|");
 
