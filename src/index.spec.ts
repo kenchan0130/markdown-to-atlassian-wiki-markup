@@ -1,4 +1,9 @@
-import { markdownToAtlassianWikiMarkup } from "./index";
+import { CodeBlockTheme } from "./atlassianWikiMarkupRenderer";
+import {
+  markdownToAtlassianWikiMarkup,
+  MarkdownToAtlassianWikiMarkupOptions
+} from "./index";
+import { AtlassianSupportLanguage } from "./language";
 
 describe("markdownToAtlassianWikiMarkup", (): void => {
   const paragraphNewLinesAtTail = "\n\n";
@@ -346,7 +351,7 @@ const helloWorld = () => {
 helloWorld();
 \`\`\`
 `;
-      const expected = `{code:collapse=false|language=javascript|linenumbers=true|theme=Confluence}
+      const expected = `{code:collapse=false|language=javascript|linenumbers=false|theme=Confluence}
 const helloWorld = () => {
   return "Hello World";
 };
@@ -367,7 +372,7 @@ actor Main
     env.out.print("Hello, world!")
 \`\`\`
 `;
-        const expected = `{code:collapse=false|language=none|linenumbers=true|theme=Confluence}
+        const expected = `{code:collapse=false|language=none|linenumbers=false|theme=Confluence}
 actor Main
   new create(env: Env) =>
     env.out.print("Hello, world!")
@@ -377,6 +382,146 @@ actor Main
         const rendered = markdownToAtlassianWikiMarkup(markdown);
         expect(rendered).toBe(expected);
       });
+    });
+  });
+});
+
+describe("markdownToAtlassianWikiMarkup Options", (): void => {
+  describe("codeBlockTheme", (): void => {
+    it("should use specified code block theme", (): void => {
+      const theme = CodeBlockTheme.Midnight;
+      const options = new MarkdownToAtlassianWikiMarkupOptions({
+        codeBlock: {
+          theme: theme
+        }
+      });
+
+      const markdown = `
+\`\`\`javascript
+const helloWorld = () => {
+  return "Hello World";
+};
+helloWorld();
+\`\`\`
+`;
+      const expected = `{code:collapse=false|language=javascript|linenumbers=false|theme=${theme}}
+const helloWorld = () => {
+  return "Hello World";
+};
+helloWorld();
+{code}
+
+`;
+      const rendered = markdownToAtlassianWikiMarkup(markdown, options);
+      expect(rendered).toBe(expected);
+    });
+  });
+
+  describe("showCodeBlockLineNumber", (): void => {
+    const markdown = `
+\`\`\`javascript
+const helloWorld = () => {
+  return "Hello World";
+};
+helloWorld();
+\`\`\`
+`;
+
+    it("should use specified code block used linenumber or not", (): void => {
+      const options = new MarkdownToAtlassianWikiMarkupOptions({
+        codeBlock: {
+          showLineNumber: true
+        }
+      });
+
+      const expected = `{code:collapse=false|language=javascript|linenumbers=true|theme=Confluence}
+const helloWorld = () => {
+  return "Hello World";
+};
+helloWorld();
+{code}
+
+`;
+      const rendered = markdownToAtlassianWikiMarkup(markdown, options);
+      expect(rendered).toBe(expected);
+    });
+
+    it("should use specified code block used linenumber or not with function", (): void => {
+      const options = new MarkdownToAtlassianWikiMarkupOptions({
+        codeBlock: {
+          showLineNumber: (
+            _code: string,
+            _lang: AtlassianSupportLanguage
+          ): boolean => {
+            return true;
+          }
+        }
+      });
+
+      const expected = `{code:collapse=false|language=javascript|linenumbers=true|theme=Confluence}
+const helloWorld = () => {
+  return "Hello World";
+};
+helloWorld();
+{code}
+
+`;
+      const rendered = markdownToAtlassianWikiMarkup(markdown, options);
+      expect(rendered).toBe(expected);
+    });
+  });
+
+  describe("collapse", (): void => {
+    const markdown = `
+\`\`\`javascript
+const helloWorld = () => {
+  return "Hello World";
+};
+helloWorld();
+\`\`\`
+`;
+
+    it("should use specified code block used collapse or not", (): void => {
+      const options = new MarkdownToAtlassianWikiMarkupOptions({
+        codeBlock: {
+          collapse: true
+        }
+      });
+
+      const expected = `{code:collapse=true|language=javascript|linenumbers=false|theme=Confluence}
+const helloWorld = () => {
+  return "Hello World";
+};
+helloWorld();
+{code}
+
+`;
+      const rendered = markdownToAtlassianWikiMarkup(markdown, options);
+      expect(rendered).toBe(expected);
+    });
+
+    it("should use specified code block used collapse or not with function", (): void => {
+      const options = new MarkdownToAtlassianWikiMarkupOptions({
+        codeBlock: {
+          collapse: (
+            _code: string,
+            _lang: AtlassianSupportLanguage
+          ): boolean => {
+            return true;
+          }
+        }
+      });
+
+      const expected = `{code:collapse=true|language=javascript|linenumbers=false|theme=Confluence}
+const helloWorld = () => {
+  return "Hello World";
+};
+helloWorld();
+{code}
+
+`;
+      const rendered = markdownToAtlassianWikiMarkup(markdown, options);
+      expect(rendered).toBe(expected);
     });
   });
 });
