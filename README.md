@@ -51,7 +51,7 @@ console.log(wikiMarkup);
 /**
 h1. Heading
 
-- list
+* list
 
 **/
 ```
