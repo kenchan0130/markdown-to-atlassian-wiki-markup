@@ -1,9 +1,10 @@
+import escapeStringRegexp from "escape-string-regexp";
+import { Renderer, Slugger } from "marked";
+
 import {
   AtlassianSupportLanguage,
   markdownToWikiMarkupLanguageMapping
 } from "./language";
-import { Renderer, Slugger } from "marked";
-import escapeStringRegexp from "escape-string-regexp";
 
 enum CodeBlockTheme {
   DJango = "DJango",
@@ -44,9 +45,48 @@ const confluenceListRegExp = new RegExp(
     .join("|")})`
 );
 
+const unescapeHtmlSpecialCharacteres = (text: string): string => {
+  return text.replace(
+    /&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/gi,
+    (substring: string, matchedString: string): string => {
+      const lowered = matchedString.toLowerCase();
+      if (lowered === "colon") {
+        return ":";
+      }
+
+      if (lowered === "amp") {
+        return "&";
+      }
+
+      if (lowered === "lt") {
+        return "<";
+      }
+
+      if (lowered === "gt") {
+        return ">";
+      }
+
+      if (lowered === "quot") {
+        return "\"";
+      }
+
+      if (lowered.charAt(0) === "#" && lowered.charAt(1) === "x") {
+        String.fromCharCode(parseInt(lowered.substring(2), 16));
+      }
+
+      if (lowered.charAt(0) === "#" && lowered.charAt(1) !== "x") {
+        String.fromCharCode(Number(lowered.substring(1)));
+      }
+
+      return substring;
+    }
+  );
+};
+
 export default class WikiMarkupRenderer extends Renderer {
   public paragraph(text: string): string {
-    return `${text}\n\n`;
+    const unescapedText = unescapeHtmlSpecialCharacteres(text);
+    return `${unescapedText}\n\n`;
   }
 
   public heading(

@@ -14,6 +14,15 @@ This is second paragraph.${paragraphNewLinesAtTail}`;
       const rendered = markdownToAtlassianWikiMarkup(markdown);
       expect(rendered).toBe(expected);
     });
+
+    describe("HTML special characters", (): void => {
+      it("should not be escaped", (): void => {
+        const markdown = '" & : < >';
+        const expected = `" & : < >${paragraphNewLinesAtTail}`;
+        const rendered = markdownToAtlassianWikiMarkup(markdown);
+        expect(rendered).toBe(expected);
+      });
+    });
   });
 
   describe("Heading", (): void => {
