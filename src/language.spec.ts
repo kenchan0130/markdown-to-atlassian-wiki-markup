@@ -1,8 +1,9 @@
+import { immutable as uniq } from "array-unique";
+
 import {
   AtlassianSupportLanguage,
   markdownToWikiMarkupLanguageMapping
 } from "./language";
-import { immutable as uniq } from "array-unique";
 
 describe("AtlassianSupportLanguage", (): void => {
   describe("enum values", (): void => {

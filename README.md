@@ -56,6 +56,54 @@ h1. Heading
 **/
 ```
 
+### Options
+
+You can use `MarkdownToAtlassianWikiMarkupOptions`.
+It has following properties.
+
+namespace|key|type|description
+---|---|---|---
+codeBlock|theme|`CodeBlockTheme` or `string`|Theme of code block.<br>See also: https://confluence.atlassian.com/doc/code-block-macro-139390.html
+codeBlock|showLineNumbers|`boolean` or `(code: string, lang: AtlassianSupportLanguage) => boolean` function or `(code: string, lang: string) => boolean` function |Show or not linenumbers of code block.
+codeBlock|collapse|`boolean` or `(code: string, lang: AtlassianSupportLanguage) => boolean` function or `(code: string, lang: string) => boolean` function|Enable or not collapse of code block.
+
+
+```typescript
+import { AtlassianSupportLanguage, CodeBlockTheme, MarkdownToAtlassianWikiMarkupOptions } from "@kenchan0130/markdown-to-atlassian-wiki-markup";
+
+const options = new MarkdownToAtlassianWikiMarkupOptions({
+  codeBlock: {
+    theme: CodeBlockTheme.DJango,
+    showLineNumbers: true,
+    collapse: true
+  }
+});
+const wikiMarkup = markdownToAtlassianWikiMarkup("# Heading 1\n- list", options);
+console.log(wikiMarkup);
+```
+
+```typescript
+import { AtlassianSupportLanguage, CodeBlockTheme, MarkdownToAtlassianWikiMarkupOptions } from "@kenchan0130/markdown-to-atlassian-wiki-markup";
+
+const options = new MarkdownToAtlassianWikiMarkupOptions({
+  codeBlock: {
+    theme: CodeBlockTheme.DJango,
+    // In this case, it does not display line numbers when the code lang is none.
+    showLineNumbers: (
+      code: string,
+      _lang: AtlassianSupportLanguage
+    ): boolean => lang !== AtlassianSupportLanguage.None,
+    // In this case, it makes code block collapsed when the code line number more than 10.
+    collapse: (
+      _code: string,
+      lang: AtlassianSupportLanguage
+    ): boolean => code.split("\n").length > 10,
+  }
+});
+const wikiMarkup = markdownToAtlassianWikiMarkup("# Heading 1\n- list", options);
+console.log(wikiMarkup);
+```
+
 ## About Markdown
 
 Markdown has various dialects.

@@ -6,7 +6,7 @@ import {
   markdownToWikiMarkupLanguageMapping
 } from "./language";
 
-enum CodeBlockTheme {
+export enum CodeBlockTheme {
   DJango = "DJango",
   Emacs = "Emacs",
   FadeToGrey = "FadeToGrey",
@@ -14,6 +14,35 @@ enum CodeBlockTheme {
   RDark = "RDark",
   Eclipse = "Eclipse",
   Confluence = "Confluence"
+}
+
+export class MarkdownToAtlassianWikiMarkupOptions {
+  public codeBlockTheme?: CodeBlockTheme;
+  public showCodeBlockLineNumbers?:
+    | boolean
+    | ((code: string, lang: AtlassianSupportLanguage) => boolean);
+  public collapse?:
+    | boolean
+    | ((code: string, lang: AtlassianSupportLanguage) => boolean);
+
+  public constructor(params: {
+    codeBlock?: {
+      theme?: CodeBlockTheme;
+      showLineNumbers?:
+        | boolean
+        | ((code: string, lang: AtlassianSupportLanguage) => boolean);
+      collapse?:
+        | boolean
+        | ((code: string, lang: AtlassianSupportLanguage) => boolean);
+    };
+  }) {
+    this.codeBlockTheme =
+      (params.codeBlock && params.codeBlock.theme) || undefined;
+    this.showCodeBlockLineNumbers =
+      (params.codeBlock && params.codeBlock.showLineNumbers) || undefined;
+    this.collapse =
+      (params.codeBlock && params.codeBlock.collapse) || undefined;
+  }
 }
 
 enum ListHeadCharacter {
@@ -83,7 +112,14 @@ const unescapeHtmlSpecialCharacteres = (text: string): string => {
   );
 };
 
-export default class WikiMarkupRenderer extends Renderer {
+export class AtlassianWikiMarkupRenderer extends Renderer {
+  private rendererOptions?: MarkdownToAtlassianWikiMarkupOptions;
+
+  public constructor(rendererOptions?: MarkdownToAtlassianWikiMarkupOptions) {
+    super();
+    this.rendererOptions = rendererOptions;
+  }
+
   public paragraph(text: string): string {
     const unescapedText = unescapeHtmlSpecialCharacteres(text);
     return `${unescapedText}\n\n`;
@@ -92,10 +128,8 @@ export default class WikiMarkupRenderer extends Renderer {
   public heading(
     text: string,
     level: number,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    raw: string,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    slugger: Slugger
+    _raw: string,
+    _slugger: Slugger
   ): string {
     return `h${level}. ${text}\n\n`;
   }
@@ -134,8 +168,7 @@ export default class WikiMarkupRenderer extends Renderer {
     return linkAlias ? `[${linkAlias}|${href}]` : `[${href}]`;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public list(body: string, ordered: boolean, start: number | ""): string {
+  public list(body: string, ordered: boolean, _start: number | ""): string {
     const lines = body
       .trim()
       .split("\n")
@@ -158,8 +191,7 @@ export default class WikiMarkupRenderer extends Renderer {
     return `${body}\n`;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public checkbox(checked: boolean): string {
+  public checkbox(_checked: boolean): string {
     // Confluence wiki does not support checkbox.
     return "";
   }
@@ -223,16 +255,46 @@ export default class WikiMarkupRenderer extends Renderer {
     return `${type}${content}`;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public code(code: string, language: string, isEscaped: boolean): string {
-    const adjustedLang = language ? language.toLowerCase() : language;
+  public code(code: string, language: string, _isEscaped: boolean): string {
+    const theme =
+      (this.rendererOptions && this.rendererOptions.codeBlockTheme) ||
+      CodeBlockTheme.Confluence;
+
+    const usingLang =
+      convertingSupportLanguageMapping[language.toLowerCase()] ||
+      AtlassianSupportLanguage.None;
+
+    const isDisplayLinenumbers = ((): boolean => {
+      const defaultValue = false;
+      if (!this.rendererOptions) {
+        return defaultValue;
+      }
+
+      if (this.rendererOptions.showCodeBlockLineNumbers instanceof Function) {
+        return this.rendererOptions.showCodeBlockLineNumbers(code, usingLang);
+      }
+
+      return this.rendererOptions.showCodeBlockLineNumbers || defaultValue;
+    })();
+
+    const isCollapseCodeBlock = ((): boolean => {
+      const defaultValue = false;
+      if (!this.rendererOptions) {
+        return defaultValue;
+      }
+
+      if (this.rendererOptions.collapse instanceof Function) {
+        return this.rendererOptions.collapse(code, usingLang);
+      }
+
+      return this.rendererOptions.collapse || defaultValue;
+    })();
+
     const params = {
-      language:
-        convertingSupportLanguageMapping[adjustedLang] ||
-        AtlassianSupportLanguage.None,
-      theme: CodeBlockTheme.Confluence,
-      linenumbers: true,
-      collapse: false
+      language: usingLang,
+      theme: theme,
+      linenumbers: isDisplayLinenumbers,
+      collapse: isCollapseCodeBlock
     };
     const paramsString = Object.entries(params)
       // Sort by key to prevent the order from changing in the way of defining params

@@ -1,9 +1,22 @@
 import marked from "marked";
 
-import WikiMarkupRenderer from "./wikiMarkupRenderer";
+import {
+  AtlassianWikiMarkupRenderer,
+  MarkdownToAtlassianWikiMarkupOptions
+} from "./atlassianWikiMarkupRenderer";
 
-const renderer = new WikiMarkupRenderer();
+export {
+  AtlassianWikiMarkupRenderer,
+  MarkdownToAtlassianWikiMarkupOptions,
+  CodeBlockTheme
+} from "./atlassianWikiMarkupRenderer";
 
-export const markdownToAtlassianWikiMarkup = (markdown: string): string => {
+export { AtlassianSupportLanguage } from "./language";
+
+export const markdownToAtlassianWikiMarkup = (
+  markdown: string,
+  options?: MarkdownToAtlassianWikiMarkupOptions
+): string => {
+  const renderer = new AtlassianWikiMarkupRenderer(options);
   return marked(markdown, { renderer: renderer });
 };
