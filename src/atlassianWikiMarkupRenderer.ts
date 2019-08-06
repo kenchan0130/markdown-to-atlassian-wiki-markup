@@ -1,7 +1,6 @@
 import escapeStringRegexp from "escape-string-regexp";
 import { Renderer, Slugger } from "marked";
 
-import { MarkdownToAtlassianWikiMarkupOptions } from "./index";
 import {
   AtlassianSupportLanguage,
   markdownToWikiMarkupLanguageMapping
@@ -15,6 +14,35 @@ export enum CodeBlockTheme {
   RDark = "RDark",
   Eclipse = "Eclipse",
   Confluence = "Confluence"
+}
+
+export class MarkdownToAtlassianWikiMarkupOptions {
+  public codeBlockTheme?: CodeBlockTheme;
+  public showCodeBlockLineNumbers?:
+    | boolean
+    | ((code: string, lang: AtlassianSupportLanguage) => boolean);
+  public collapse?:
+    | boolean
+    | ((code: string, lang: AtlassianSupportLanguage) => boolean);
+
+  public constructor(params: {
+    codeBlock?: {
+      theme?: CodeBlockTheme;
+      showLineNumbers?:
+        | boolean
+        | ((code: string, lang: AtlassianSupportLanguage) => boolean);
+      collapse?:
+        | boolean
+        | ((code: string, lang: AtlassianSupportLanguage) => boolean);
+    };
+  }) {
+    this.codeBlockTheme =
+      (params.codeBlock && params.codeBlock.theme) || undefined;
+    this.showCodeBlockLineNumbers =
+      (params.codeBlock && params.codeBlock.showLineNumbers) || undefined;
+    this.collapse =
+      (params.codeBlock && params.codeBlock.collapse) || undefined;
+  }
 }
 
 enum ListHeadCharacter {
@@ -242,11 +270,11 @@ export class AtlassianWikiMarkupRenderer extends Renderer {
         return defaultValue;
       }
 
-      if (this.rendererOptions.showCodeBlockLineNumber instanceof Function) {
-        return this.rendererOptions.showCodeBlockLineNumber(code, usingLang);
+      if (this.rendererOptions.showCodeBlockLineNumbers instanceof Function) {
+        return this.rendererOptions.showCodeBlockLineNumbers(code, usingLang);
       }
 
-      return this.rendererOptions.showCodeBlockLineNumber || defaultValue;
+      return this.rendererOptions.showCodeBlockLineNumbers || defaultValue;
     })();
 
     const isCollapseCodeBlock = ((): boolean => {

@@ -1,5 +1,5 @@
-import { CodeBlockTheme } from "./atlassianWikiMarkupRenderer";
 import {
+  CodeBlockTheme,
   markdownToAtlassianWikiMarkup,
   MarkdownToAtlassianWikiMarkupOptions
 } from "./index";
@@ -430,7 +430,7 @@ helloWorld();
     it("should use specified code block used linenumber or not", (): void => {
       const options = new MarkdownToAtlassianWikiMarkupOptions({
         codeBlock: {
-          showLineNumber: true
+          showLineNumbers: true
         }
       });
 
@@ -449,7 +449,7 @@ helloWorld();
     it("should use specified code block used linenumber or not with function", (): void => {
       const options = new MarkdownToAtlassianWikiMarkupOptions({
         codeBlock: {
-          showLineNumber: (
+          showLineNumbers: (
             _code: string,
             _lang: AtlassianSupportLanguage
           ): boolean => {
