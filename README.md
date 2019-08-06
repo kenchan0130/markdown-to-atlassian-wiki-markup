@@ -39,7 +39,7 @@ yarn add @kenchan0130/markdown-to-atlassian-wiki-markup
 
 ```js
 // ES5
-const markdownToAtlassianWikiMarkup = require("@kenchan0130/markdown-to-atlassian-wiki-markup");
+const markdownToAtlassianWikiMarkup = require("@kenchan0130/markdown-to-atlassian-wiki-markup").markdownToAtlassianWikiMarkup;
 
 // TypeScript
 import { markdownToAtlassianWikiMarkup } from "@kenchan0130/markdown-to-atlassian-wiki-markup";
