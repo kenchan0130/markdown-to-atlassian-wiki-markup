@@ -100,11 +100,11 @@ const unescapeHtmlSpecialCharacteres = (text: string): string => {
       }
 
       if (lowered.charAt(0) === "#" && lowered.charAt(1) === "x") {
-        String.fromCharCode(parseInt(lowered.substring(2), 16));
+        return String.fromCharCode(parseInt(lowered.substring(2), 16));
       }
 
       if (lowered.charAt(0) === "#" && lowered.charAt(1) !== "x") {
-        String.fromCharCode(Number(lowered.substring(1)));
+        return String.fromCharCode(Number(lowered.substring(1)));
       }
 
       return substring;
