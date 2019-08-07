@@ -216,6 +216,7 @@ ___`;
 ** This is list 2-2
 *** This is list 2-2-1
 * This is list 3
+
 `;
         const rendered = markdownToAtlassianWikiMarkup(markdown);
         expect(rendered).toBe(expected);
@@ -237,6 +238,7 @@ ___`;
 ## This is list 2-2
 ### This is list 2-2-1
 # This is list 3
+
 `;
         const rendered = markdownToAtlassianWikiMarkup(markdown);
         expect(rendered).toBe(expected);
@@ -254,6 +256,7 @@ ___`;
 # This is list 2
 #* This is list 2-1
 #* This is list 2-2
+
 `;
         const rendered = markdownToAtlassianWikiMarkup(markdown);
         expect(rendered).toBe(expected);
@@ -268,6 +271,7 @@ ___`;
       const expected = `
 * This is checkbox without checked
 * This is checkbox with checked
+
 `;
       const rendered = markdownToAtlassianWikiMarkup(markdown);
       expect(rendered).toBe(expected);

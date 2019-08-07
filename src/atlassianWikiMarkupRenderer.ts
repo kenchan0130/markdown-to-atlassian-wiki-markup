@@ -184,7 +184,7 @@ export class AtlassianWikiMarkupRenderer extends Renderer {
       })
       .join("\n");
 
-    return `\n${joinedLine}\n`;
+    return `\n${joinedLine}\n\n`;
   }
 
   public listitem(body: string): string {
