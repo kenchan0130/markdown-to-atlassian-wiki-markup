@@ -37,16 +37,12 @@ yarn add @kenchan0130/markdown-to-atlassian-wiki-markup
 
 ## Usage
 
-```js
-// ES5
-const markdownToAtlassianWikiMarkup = require("@kenchan0130/markdown-to-atlassian-wiki-markup").markdownToAtlassianWikiMarkup;
-
-// TypeScript
-import { markdownToAtlassianWikiMarkup } from "@kenchan0130/markdown-to-atlassian-wiki-markup";
-```
+### Usage JavaScript
 
 ```js
-const wikiMarkup = markdownToAtlassianWikiMarkup("# Heading 1\n- list");
+var markdownToAtlassianWikiMarkup = require("@kenchan0130/markdown-to-atlassian-wiki-markup").markdownToAtlassianWikiMarkup;
+
+var wikiMarkup = markdownToAtlassianWikiMarkup("# Heading 1\n- list");
 console.log(wikiMarkup);
 /**
 h1. Heading
@@ -56,52 +52,142 @@ h1. Heading
 **/
 ```
 
-### Options
+### Usage TypeScript
+
+```typescript
+import { markdownToAtlassianWikiMarkup } from "@kenchan0130/markdown-to-atlassian-wiki-markup";
+console.log(wikiMarkup);
+/**
+h1. Heading
+
+* list
+
+**/
+```
+
+## Options
 
 You can use `MarkdownToAtlassianWikiMarkupOptions`.
 It has following properties.
 
-namespace|key|type|description
----|---|---|---
-codeBlock|theme|`CodeBlockTheme` or `string`|Theme of code block.<br>See also: https://confluence.atlassian.com/doc/code-block-macro-139390.html
-codeBlock|showLineNumbers|`boolean` or `(code: string, lang: AtlassianSupportLanguage) => boolean` function or `(code: string, lang: string) => boolean` function |Show or not linenumbers of code block.
-codeBlock|collapse|`boolean` or `(code: string, lang: AtlassianSupportLanguage) => boolean` function or `(code: string, lang: string) => boolean` function|Enable or not collapse of code block.
+| namespace | key             | type                                                                                                                                    | description                                                                                                                                                              |
+|-----------|-----------------|-----------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| codeBlock | theme           | `CodeBlockTheme` or `string`                                                                                                            | Theme of code block.<br>See also: [https://confluence.atlassian.com/doc/code-block-macro-139390.html](https://confluence.atlassian.com/doc/code-block-macro-139390.html) |
+| codeBlock | showLineNumbers | `boolean` or `(code: string, lang: AtlassianSupportLanguage) => boolean` function or `(code: string, lang: string) => boolean` function | Show or not linenumbers of code block.                                                                                                                                   |
+| codeBlock | collapse        | `boolean` or `(code: string, lang: AtlassianSupportLanguage) => boolean` function or `(code: string, lang: string) => boolean` function | Enable or not collapse of code block.                                                                                                                                    |
 
+### Options JavaScript Example
+
+```js
+var markdownToAtlassianWikiMarkup = require("@kenchan0130/markdown-to-atlassian-wiki-markup").markdownToAtlassianWikiMarkup;
+
+var options = {
+  codeBlock: {
+    theme: "DJango",
+    showLineNumbers: true,
+    collapse: true
+  }
+};
+var wikiMarkup = markdownToAtlassianWikiMarkup(`
+\`\`\`javascript
+console.log("This is JavaScript.");
+\`\`\`
+`, options);
+console.log(wikiMarkup);
+/*
+
+{code:collapse=true|language=javascript|linenumbers=true|theme=DJango}
+console.log("This is JavaScript.");
+{code}
+
+*/
+```
+
+```js
+var markdownToAtlassianWikiMarkup = require("@kenchan0130/markdown-to-atlassian-wiki-markup").markdownToAtlassianWikiMarkup;
+
+const options = {
+  codeBlock: {
+    theme: "DJango",
+    // In this case, it does not display line numbers when the code lang is none.
+    showLineNumbers: function(_code, lang) { return lang !== "none"; },
+    // In this case, it makes code block collapsed when the code line number more than 10.
+    collapse: function(code) { return code.split("\n").length > 10; },
+  }
+});
+var wikiMarkup = markdownToAtlassianWikiMarkup(```
+\`\`\`typescript
+console.log("This is TypeScript.");
+\`\`\`
+```, options);
+console.log(wikiMarkup);
+/*
+
+{code:collapse=false|language=none|linenumbers=false|theme=DJango}
+console.log("This is TypeScript.");
+{code}
+
+*/
+```
+
+### Options TypeScript Example
 
 ```typescript
-import { AtlassianSupportLanguage, CodeBlockTheme, MarkdownToAtlassianWikiMarkupOptions } from "@kenchan0130/markdown-to-atlassian-wiki-markup";
+import { AtlassianSupportLanguage, CodeBlockTheme, markdownToAtlassianWikiMarkup, MarkdownToAtlassianWikiMarkupOptions } from "@kenchan0130/markdown-to-atlassian-wiki-markup";
 
-const options = new MarkdownToAtlassianWikiMarkupOptions({
+const options = {
   codeBlock: {
     theme: CodeBlockTheme.DJango,
     showLineNumbers: true,
     collapse: true
   }
-});
-const wikiMarkup = markdownToAtlassianWikiMarkup("# Heading 1\n- list", options);
+};
+const wikiMarkup = markdownToAtlassianWikiMarkup(`
+\`\`\`javascript
+console.log("This is JavaScript.");
+\`\`\`
+`, options);
 console.log(wikiMarkup);
+/*
+
+{code:collapse=true|language=javascript|linenumbers=true|theme=DJango}
+console.log("This is JavaScript.");
+{code}
+
+*/
 ```
 
 ```typescript
-import { AtlassianSupportLanguage, CodeBlockTheme, MarkdownToAtlassianWikiMarkupOptions } from "@kenchan0130/markdown-to-atlassian-wiki-markup";
+import { AtlassianSupportLanguage, CodeBlockTheme, markdownToAtlassianWikiMarkup, MarkdownToAtlassianWikiMarkupOptions } from "@kenchan0130/markdown-to-atlassian-wiki-markup";
 
-const options = new MarkdownToAtlassianWikiMarkupOptions({
+const options = {
   codeBlock: {
     theme: CodeBlockTheme.DJango,
     // In this case, it does not display line numbers when the code lang is none.
     showLineNumbers: (
-      code: string,
-      _lang: AtlassianSupportLanguage
+      _code: string,
+      lang: AtlassianSupportLanguage
     ): boolean => lang !== AtlassianSupportLanguage.None,
     // In this case, it makes code block collapsed when the code line number more than 10.
     collapse: (
-      _code: string,
-      lang: AtlassianSupportLanguage
+      code: string,
+      _lang: AtlassianSupportLanguage
     ): boolean => code.split("\n").length > 10,
   }
 });
-const wikiMarkup = markdownToAtlassianWikiMarkup("# Heading 1\n- list", options);
+const wikiMarkup = markdownToAtlassianWikiMarkup(```
+\`\`\`typescript
+console.log("This is TypeScript.");
+\`\`\`
+```, options);
 console.log(wikiMarkup);
+/*
+
+{code:collapse=false|language=none|linenumbers=false|theme=DJango}
+console.log("This is TypeScript.");
+{code}
+
+*/
 ```
 
 ## About Markdown

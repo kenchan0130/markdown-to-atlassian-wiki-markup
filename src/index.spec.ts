@@ -1,8 +1,4 @@
-import {
-  CodeBlockTheme,
-  markdownToAtlassianWikiMarkup,
-  MarkdownToAtlassianWikiMarkupOptions
-} from "./index";
+import { CodeBlockTheme, markdownToAtlassianWikiMarkup } from "./index";
 import { AtlassianSupportLanguage } from "./language";
 
 describe("markdownToAtlassianWikiMarkup", (): void => {
@@ -394,11 +390,11 @@ describe("markdownToAtlassianWikiMarkup Options", (): void => {
   describe("codeBlockTheme", (): void => {
     it("should use specified code block theme", (): void => {
       const theme = CodeBlockTheme.Midnight;
-      const options = new MarkdownToAtlassianWikiMarkupOptions({
+      const options = {
         codeBlock: {
           theme: theme
         }
-      });
+      };
 
       const markdown = `
 \`\`\`javascript
@@ -432,11 +428,11 @@ helloWorld();
 `;
 
     it("should use specified code block used linenumber or not", (): void => {
-      const options = new MarkdownToAtlassianWikiMarkupOptions({
+      const options = {
         codeBlock: {
           showLineNumbers: true
         }
-      });
+      };
 
       const expected = `{code:collapse=false|language=javascript|linenumbers=true|theme=Confluence}
 const helloWorld = () => {
@@ -451,7 +447,7 @@ helloWorld();
     });
 
     it("should use specified code block used linenumber or not with function", (): void => {
-      const options = new MarkdownToAtlassianWikiMarkupOptions({
+      const options = {
         codeBlock: {
           showLineNumbers: (
             _code: string,
@@ -460,7 +456,7 @@ helloWorld();
             return true;
           }
         }
-      });
+      };
 
       const expected = `{code:collapse=false|language=javascript|linenumbers=true|theme=Confluence}
 const helloWorld = () => {
@@ -486,11 +482,11 @@ helloWorld();
 `;
 
     it("should use specified code block used collapse or not", (): void => {
-      const options = new MarkdownToAtlassianWikiMarkupOptions({
+      const options = {
         codeBlock: {
           collapse: true
         }
-      });
+      };
 
       const expected = `{code:collapse=true|language=javascript|linenumbers=false|theme=Confluence}
 const helloWorld = () => {
@@ -505,7 +501,7 @@ helloWorld();
     });
 
     it("should use specified code block used collapse or not with function", (): void => {
-      const options = new MarkdownToAtlassianWikiMarkupOptions({
+      const options = {
         codeBlock: {
           collapse: (
             _code: string,
@@ -514,7 +510,7 @@ helloWorld();
             return true;
           }
         }
-      });
+      };
 
       const expected = `{code:collapse=true|language=javascript|linenumbers=false|theme=Confluence}
 const helloWorld = () => {
