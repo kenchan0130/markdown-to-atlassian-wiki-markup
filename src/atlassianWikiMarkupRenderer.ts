@@ -16,33 +16,16 @@ export enum CodeBlockTheme {
   Confluence = "Confluence"
 }
 
-export class MarkdownToAtlassianWikiMarkupOptions {
-  public codeBlockTheme?: CodeBlockTheme;
-  public showCodeBlockLineNumbers?:
-    | boolean
-    | ((code: string, lang: AtlassianSupportLanguage) => boolean);
-  public collapse?:
-    | boolean
-    | ((code: string, lang: AtlassianSupportLanguage) => boolean);
-
-  public constructor(params: {
-    codeBlock?: {
-      theme?: CodeBlockTheme;
-      showLineNumbers?:
-        | boolean
-        | ((code: string, lang: AtlassianSupportLanguage) => boolean);
-      collapse?:
-        | boolean
-        | ((code: string, lang: AtlassianSupportLanguage) => boolean);
-    };
-  }) {
-    this.codeBlockTheme =
-      (params.codeBlock && params.codeBlock.theme) || undefined;
-    this.showCodeBlockLineNumbers =
-      (params.codeBlock && params.codeBlock.showLineNumbers) || undefined;
-    this.collapse =
-      (params.codeBlock && params.codeBlock.collapse) || undefined;
-  }
+export interface MarkdownToAtlassianWikiMarkupOptions {
+  codeBlock?: {
+    theme?: CodeBlockTheme;
+    showLineNumbers?:
+      | boolean
+      | ((code: string, lang: AtlassianSupportLanguage) => boolean);
+    collapse?:
+      | boolean
+      | ((code: string, lang: AtlassianSupportLanguage) => boolean);
+  };
 }
 
 enum ListHeadCharacter {
@@ -257,7 +240,9 @@ export class AtlassianWikiMarkupRenderer extends Renderer {
 
   public code(code: string, language: string, _isEscaped: boolean): string {
     const theme =
-      (this.rendererOptions && this.rendererOptions.codeBlockTheme) ||
+      (this.rendererOptions &&
+        this.rendererOptions.codeBlock &&
+        this.rendererOptions.codeBlock.theme) ||
       CodeBlockTheme.Confluence;
 
     const usingLang =
@@ -266,28 +251,28 @@ export class AtlassianWikiMarkupRenderer extends Renderer {
 
     const isDisplayLinenumbers = ((): boolean => {
       const defaultValue = false;
-      if (!this.rendererOptions) {
+      if (!this.rendererOptions || !this.rendererOptions.codeBlock) {
         return defaultValue;
       }
 
-      if (this.rendererOptions.showCodeBlockLineNumbers instanceof Function) {
-        return this.rendererOptions.showCodeBlockLineNumbers(code, usingLang);
+      if (this.rendererOptions.codeBlock.showLineNumbers instanceof Function) {
+        return this.rendererOptions.codeBlock.showLineNumbers(code, usingLang);
       }
 
-      return this.rendererOptions.showCodeBlockLineNumbers || defaultValue;
+      return this.rendererOptions.codeBlock.showLineNumbers || defaultValue;
     })();
 
     const isCollapseCodeBlock = ((): boolean => {
       const defaultValue = false;
-      if (!this.rendererOptions) {
+      if (!this.rendererOptions || !this.rendererOptions.codeBlock) {
         return defaultValue;
       }
 
-      if (this.rendererOptions.collapse instanceof Function) {
-        return this.rendererOptions.collapse(code, usingLang);
+      if (this.rendererOptions.codeBlock.collapse instanceof Function) {
+        return this.rendererOptions.codeBlock.collapse(code, usingLang);
       }
 
-      return this.rendererOptions.collapse || defaultValue;
+      return this.rendererOptions.codeBlock.collapse || defaultValue;
     })();
 
     const params = {
