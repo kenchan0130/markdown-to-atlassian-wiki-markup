@@ -27,6 +27,8 @@
 
 Convert markdown to atlassian wiki markup
 
+If you want to use this on your command line, you can use [markdown-to-atlassian-wiki-markup-cli](https://github.com/kenchan0130/markdown-to-atlassian-wiki-markup-cli).
+
 ## Installation
 
 ```sh
