@@ -1,6 +1,6 @@
 {
   "name": "@kenchan0130/markdown-to-atlassian-wiki-markup",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Convert markdown to atlassian wiki markup",
   "main": "dist/index.js",
   "scripts": {
