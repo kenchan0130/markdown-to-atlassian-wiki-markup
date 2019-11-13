@@ -28,6 +28,8 @@ export interface MarkdownToAtlassianWikiMarkupOptions {
   };
 }
 
+export class AtlassianWikiMarkupRendererSlugger extends Slugger {}
+
 enum ListHeadCharacter {
   Numbered = "#",
   Bullet = "*"
@@ -112,7 +114,7 @@ export class AtlassianWikiMarkupRenderer extends Renderer {
     text: string,
     level: number,
     _raw: string,
-    _slugger: Slugger
+    _slugger: AtlassianWikiMarkupRendererSlugger
   ): string {
     return `h${level}. ${text}\n\n`;
   }

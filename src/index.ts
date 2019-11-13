@@ -7,6 +7,7 @@ import {
 
 export {
   AtlassianWikiMarkupRenderer,
+  AtlassianWikiMarkupRendererSlugger,
   MarkdownToAtlassianWikiMarkupOptions,
   CodeBlockTheme
 } from "./atlassianWikiMarkupRenderer";
