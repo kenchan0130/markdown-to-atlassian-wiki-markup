@@ -238,16 +238,21 @@ export class AtlassianWikiMarkupRenderer extends Renderer {
     return `${type}${content}`;
   }
 
-  public code(code: string, language: string, _isEscaped: boolean): string {
+  public code(
+    code: string,
+    language: string | undefined,
+    _isEscaped: boolean
+  ): string {
     const theme =
       (this.rendererOptions &&
         this.rendererOptions.codeBlock &&
         this.rendererOptions.codeBlock.theme) ||
       CodeBlockTheme.Confluence;
 
-    const usingLang =
-      convertingSupportLanguageMapping[language.toLowerCase()] ||
-      AtlassianSupportLanguage.None;
+    const usingLang = language
+      ? convertingSupportLanguageMapping[language.toLowerCase()] ||
+        AtlassianSupportLanguage.None
+      : AtlassianSupportLanguage.None;
 
     const isDisplayLinenumbers = ((): boolean => {
       const defaultValue = false;
