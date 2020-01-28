@@ -58,6 +58,8 @@ h1. Heading
 
 ```typescript
 import { markdownToAtlassianWikiMarkup } from "@kenchan0130/markdown-to-atlassian-wiki-markup";
+
+const wikiMarkup = markdownToAtlassianWikiMarkup("# Heading 1\n- list");
 console.log(wikiMarkup);
 /**
 h1. Heading
