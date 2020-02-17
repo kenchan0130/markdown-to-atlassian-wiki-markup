@@ -1,3 +1,5 @@
+import "ts-polyfill/lib/es2019-array"; // It will be removed when node 10 is stopped supporting (become EOL).
+
 import { ValueOf } from "./valueOf";
 
 // See also: https://confluence.atlassian.com/doc/code-block-macro-139390.html, https://jira.atlassian.com/secure/WikiRendererHelpAction.jspa?section=advanced

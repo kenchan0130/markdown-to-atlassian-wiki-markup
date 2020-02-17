@@ -1,3 +1,5 @@
+import "ts-polyfill/lib/es2019-array"; // It will be removed when node 10 is stopped supporting (become EOL).
+
 import { immutable as uniq } from "array-unique";
 
 import {
