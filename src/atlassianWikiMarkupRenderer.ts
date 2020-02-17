@@ -5,6 +5,7 @@ import {
   AtlassianSupportLanguage,
   markdownToWikiMarkupLanguageMapping
 } from "./language";
+import { ValueOf } from "./valueOf";
 
 export enum CodeBlockTheme {
   DJango = "DJango",
@@ -16,41 +17,34 @@ export enum CodeBlockTheme {
   Confluence = "Confluence"
 }
 
-export interface MarkdownToAtlassianWikiMarkupOptions {
+export type MarkdownToAtlassianWikiMarkupOptions = {
   codeBlock?: {
     theme?: CodeBlockTheme;
     showLineNumbers?:
       | boolean
-      | ((code: string, lang: AtlassianSupportLanguage) => boolean);
+      | ((
+          code: string,
+          lang: ValueOf<typeof AtlassianSupportLanguage>
+        ) => boolean);
     collapse?:
       | boolean
-      | ((code: string, lang: AtlassianSupportLanguage) => boolean);
+      | ((
+          code: string,
+          lang: ValueOf<typeof AtlassianSupportLanguage>
+        ) => boolean);
   };
-}
+};
 
-enum ListHeadCharacter {
-  Numbered = "#",
-  Bullet = "*"
-}
+const ListHeadCharacter = {
+  Numbered: "#",
+  Bullet: "*"
+};
 
-enum TableCellTypeCharacter {
-  Header = "||",
-  NonHeader = "|"
-}
+const TableCellTypeCharacter = {
+  Header: "||",
+  NonHeader: "|"
+};
 
-const atlassianSupportLanguageList = Object.values(AtlassianSupportLanguage);
-const atlassianSupportLanguageReduceInitialValue: {
-  [key: string]: string;
-} = {};
-const convertingSupportLanguageMapping = Object.assign(
-  markdownToWikiMarkupLanguageMapping,
-  atlassianSupportLanguageList.reduce((previousValue, currentValue): {
-    [key: string]: string;
-  } => {
-    previousValue[currentValue] = currentValue;
-    return previousValue;
-  }, atlassianSupportLanguageReduceInitialValue)
-);
 const confluenceListRegExp = new RegExp(
   `^(${Object.values(ListHeadCharacter)
     .map(escapeStringRegexp)
@@ -204,7 +198,7 @@ export class AtlassianWikiMarkupRenderer extends Renderer {
     const removedEscapePipe = content.trim().replace("\\|", "");
     const twoPipeMatch = removedEscapePipe.match(/\|\|(?!.*\|\|)/);
     const onePipeMatch = removedEscapePipe.match(/\|(?!.*\|)/);
-    const rowCloseType = ((): TableCellTypeCharacter => {
+    const rowCloseType = ((): ValueOf<typeof TableCellTypeCharacter> => {
       if (!onePipeMatch || !onePipeMatch.index) {
         throw new Error(
           "The table row expects at least one '|' in the table cell."
@@ -250,7 +244,7 @@ export class AtlassianWikiMarkupRenderer extends Renderer {
       CodeBlockTheme.Confluence;
 
     const usingLang = language
-      ? convertingSupportLanguageMapping[language.toLowerCase()] ||
+      ? markdownToWikiMarkupLanguageMapping.get(language.toLowerCase()) ||
         AtlassianSupportLanguage.None
       : AtlassianSupportLanguage.None;
 

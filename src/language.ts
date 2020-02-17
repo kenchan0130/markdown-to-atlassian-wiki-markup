@@ -1,77 +1,281 @@
-export enum AtlassianSupportLanguage {
-  ActionScript = "actionscript",
-  Ada = "ada",
-  AppleScript = "applescript",
-  Bash = "bash",
-  C = "c",
-  CSharp = "c#",
-  CPlusPlus = "c++",
-  CPP = "cpp",
-  CSS = "css",
-  Erlang = "erlang",
-  Go = "go",
-  Groovy = "groovy",
-  Haskell = "haskell",
-  HTML = "html",
-  Java = "java",
-  JavaScript = "javascript",
-  JS = "js",
-  JSON = "json",
-  Lua = "lua",
-  None = "none",
-  nyan = "nyan",
-  ObjectiveC = "objc",
-  Perl = "perl",
-  PHP = "php",
-  Python = "python",
-  R = "r",
-  Rainbow = "rainbow",
-  Ruby = "ruby",
-  Scala = "scala",
-  sh = "sh",
-  SQL = "sql",
-  Swift = "swift",
-  VisualBasic = "visualbasic",
-  XML = "xml",
-  YAML = "yaml"
-}
+import "ts-polyfill/lib/es2019-array"; // It will be removed when node 10 is stopped supporting (become EOL).
+
+import { ValueOf } from "./valueOf";
+
+// See also: https://confluence.atlassian.com/doc/code-block-macro-139390.html, https://jira.atlassian.com/secure/WikiRendererHelpAction.jspa?section=advanced
+type SupportLanguage<T> = {
+  ActionScript: T;
+  Ada: T;
+  AppleScript: T;
+  Bash: T;
+  C: T;
+  CSharp: T;
+  CPlusPlus: T;
+  CSS: T;
+  Erlang: T;
+  Go: T;
+  Groovy: T;
+  Haskell: T;
+  HTML: T;
+  Java: T;
+  JavaScript: T;
+  JSON: T;
+  Lua: T;
+  Nyan: T;
+  ObjectiveC: T;
+  Perl: T;
+  PHP: T;
+  PowerShell: T;
+  Python: T;
+  R: T;
+  Ruby: T;
+  Sass: T;
+  Scala: T;
+  SQL: T;
+  Swift: T;
+  VisualBasic: T;
+  XML: T;
+  YAML: T;
+};
+
+export const AtlassianSupportLanguage: SupportLanguage<string> & {
+  None: string;
+} = {
+  ActionScript: "actionscript",
+  Ada: "ada",
+  AppleScript: "applescript",
+  Bash: "bash",
+  C: "c",
+  CSharp: "c#",
+  CPlusPlus: "c++",
+  CSS: "css",
+  Erlang: "erlang",
+  Go: "go",
+  Groovy: "groovy",
+  Haskell: "haskell",
+  HTML: "html",
+  Java: "java",
+  JavaScript: "javascript",
+  JSON: "json",
+  Lua: "lua",
+  None: "none",
+  Nyan: "nyan",
+  ObjectiveC: "objc",
+  Perl: "perl",
+  PHP: "php",
+  PowerShell: "powershell",
+  Python: "python",
+  R: "r",
+  Ruby: "ruby",
+  Sass: "sass",
+  Scala: "scala",
+  SQL: "sql",
+  Swift: "swift",
+  VisualBasic: "visualbasic",
+  XML: "xml",
+  YAML: "yaml"
+};
 
 // See also: https://github.com/github/linguist/blob/master/lib/linguist/languages.yml
-export const markdownToWikiMarkupLanguageMapping: {
-  [key: string]: AtlassianSupportLanguage;
-} = {
-  "actionscript 3": AtlassianSupportLanguage.ActionScript,
-  actionscript3: AtlassianSupportLanguage.ActionScript,
-  as3: AtlassianSupportLanguage.ActionScript,
-  ada95: AtlassianSupportLanguage.Ada,
-  ada2005: AtlassianSupportLanguage.Ada,
-  osascript: AtlassianSupportLanguage.AppleScript,
-  zsh: AtlassianSupportLanguage.Bash,
-  csharp: AtlassianSupportLanguage.CSharp,
-  sass: AtlassianSupportLanguage.CSS,
-  scss: AtlassianSupportLanguage.CSS,
-  golang: AtlassianSupportLanguage.Go,
-  htm: AtlassianSupportLanguage.HTML,
-  node: AtlassianSupportLanguage.JavaScript,
-  "obj-c": AtlassianSupportLanguage.ObjectiveC,
-  objectivec: AtlassianSupportLanguage.ObjectiveC,
-  cperl: AtlassianSupportLanguage.Perl,
-  inc: AtlassianSupportLanguage.PHP,
-  rusthon: AtlassianSupportLanguage.Python,
-  python3: AtlassianSupportLanguage.Python,
-  rscript: AtlassianSupportLanguage.R,
-  splus: AtlassianSupportLanguage.R,
-  jruby: AtlassianSupportLanguage.Ruby,
-  macruby: AtlassianSupportLanguage.Ruby,
-  rake: AtlassianSupportLanguage.Ruby,
-  rb: AtlassianSupportLanguage.Ruby,
-  rbx: AtlassianSupportLanguage.Ruby,
-  shell: AtlassianSupportLanguage.sh,
-  vb: AtlassianSupportLanguage.VisualBasic,
-  vbnet: AtlassianSupportLanguage.VisualBasic,
-  "vb.net": AtlassianSupportLanguage.VisualBasic,
-  rss: AtlassianSupportLanguage.XML,
-  xsd: AtlassianSupportLanguage.XML,
-  wsdl: AtlassianSupportLanguage.XML,
-  yml: AtlassianSupportLanguage.YAML
+export const GitHubFlaveredMarddownCodeBlockLanguage: SupportLanguage<Array<
+  string
+>> = {
+  ActionScript: ["actionscript", "actionscript 3", "actionscript3", "as3"],
+  Ada: ["ada", "ada95", "ada2005"],
+  AppleScript: ["applescript", "osascript"],
+  Bash: [
+    "abuild",
+    "alpine abuild",
+    "apkbuild",
+    "bash",
+    "bash session",
+    "console",
+    "gentoo ebuild",
+    "gentoo eclass",
+    "openrc",
+    "openrc runscript",
+    "sh",
+    "shell",
+    "shell-script",
+    "shellsession",
+    "tcsh",
+    "zsh"
+  ],
+  C: ["c"],
+  CSharp: ["c#", "csharp", "eq", "uno"],
+  CPlusPlus: [
+    "ags",
+    "ags script",
+    "asymptote",
+    "byond",
+    "c++",
+    "cpp",
+    "cuda",
+    "dm",
+    "dtrace",
+    "dtrace-script",
+    "edje data collection",
+    "game maker language",
+    "holyc",
+    "metal",
+    "mql4",
+    "mql5",
+    "oncrpc",
+    "opencl",
+    "rpc",
+    "rpcgen",
+    "squirrel",
+    "swig",
+    "unified parallel c",
+    "x bitmap",
+    "x pixmap",
+    "xbm",
+    "xc",
+    "xdr",
+    "xpm",
+    "xs"
+  ],
+  CSS: ["css"],
+  Erlang: ["erlang"],
+  Go: ["go", "golang", "v", "vlang"],
+  Groovy: ["groovy", "nextflow"],
+  Haskell: [
+    "c2hs",
+    "c2hs haskell",
+    "cabal",
+    "cabal config",
+    "dhall",
+    "frege",
+    "gf",
+    "grammatical framework",
+    "haskell",
+    "purescript"
+  ],
+  HTML: ["html", "kit", "mtml", "riot", "svelte", "vue", "xhtml"],
+  Java: ["apex", "chuck", "jasmin", "java", "unrealscript"],
+  JavaScript: [
+    "cycript",
+    "javascript",
+    "javascript+erb",
+    "js",
+    "json with comments",
+    "json5",
+    "jsonc",
+    "jsonld",
+    "jsx",
+    "node",
+    "tsx"
+  ],
+  JSON: [
+    "ecere projects",
+    "ipython notebook",
+    "json",
+    "jupyter notebook",
+    "max",
+    "max/msp",
+    "maxmsp"
+  ],
+  Lua: ["lua", "terra"],
+  Nyan: ["nyan"], // Not support in GitHub
+  ObjectiveC: [
+    "obj-c",
+    "obj-c++",
+    "objc",
+    "objc++",
+    "objective-c",
+    "objective-c++",
+    "objectivec",
+    "objectivec++"
+  ],
+  Perl: ["cperl", "perl", "perl-6", "perl6", "pod", "pod 6", "raku"],
+  PHP: ["hack", "html+php", "inc", "php", "zephir"],
+  PowerShell: ["posh", "powershell", "pwsh"],
+  Python: [
+    "bazel",
+    "bzl",
+    "easybuild",
+    "gn",
+    "python",
+    "python3",
+    "ren'py",
+    "renpy",
+    "rusthon",
+    "sage",
+    "starlark"
+  ],
+  R: ["r", "rscript", "splus"],
+  Ruby: [
+    "crystal",
+    "hcl",
+    "jruby",
+    "macruby",
+    "mirah",
+    "rake",
+    "rb",
+    "rbx",
+    "ruby",
+    "terraform"
+  ],
+  Sass: ["sass", "scss"],
+  Scala: ["scala"],
+  SQL: ["hiveql", "plsql", "sql", "sqlpl", "tsql"],
+  Swift: ["swift"],
+  VisualBasic: [
+    "vba",
+    "vb6",
+    "visual basic 6",
+    "visual basic for applications",
+    "visual basic .net",
+    "vbnet",
+    "vb .net",
+    "vb.net"
+  ],
+  XML: [
+    "ant build system",
+    "collada",
+    "eagle",
+    "genshi",
+    "labview",
+    "maven pom",
+    "rss",
+    "svg",
+    "web ontology language",
+    "wsdl",
+    "xml",
+    "xml property list",
+    "xml+genshi",
+    "xml+kid",
+    "xpages",
+    "xproc",
+    "xsd",
+    "xsl",
+    "xslt"
+  ],
+  YAML: [
+    "common workflow language",
+    "cwl",
+    "lookml",
+    "raml",
+    "salt",
+    "saltstack",
+    "saltstate",
+    "spline font database",
+    "unity3d asset",
+    "yaml",
+    "yml"
+  ]
 };
+
+export const markdownToWikiMarkupLanguageMapping: Map<
+  string,
+  ValueOf<typeof AtlassianSupportLanguage>
+> = new Map(
+  Object.entries(GitHubFlaveredMarddownCodeBlockLanguage).flatMap(
+    ([key, langs]) => {
+      return langs.map(v => [
+        v,
+        AtlassianSupportLanguage[key as keyof typeof AtlassianSupportLanguage]
+      ]);
+    }
+  )
+);

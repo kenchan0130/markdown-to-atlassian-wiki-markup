@@ -34,7 +34,8 @@
   "dependencies": {
     "@types/marked": "^0.7.0",
     "escape-string-regexp": "^2.0.0",
-    "marked": "^0.7.0"
+    "marked": "^0.7.0",
+    "ts-polyfill": "^3.8.1-rc"
   },
   "devDependencies": {
     "@types/array-unique": "^0.3.0",
