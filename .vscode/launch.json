@@ -19,7 +19,8 @@
         ]
       },
       "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen"
+      "internalConsoleOptions": "neverOpen",
+      "preLaunchTask": "clean build artifacts"
     }
   ]
 }

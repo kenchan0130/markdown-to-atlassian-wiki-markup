@@ -8,10 +8,14 @@ import {
 export {
   AtlassianWikiMarkupRenderer,
   MarkdownToAtlassianWikiMarkupOptions,
-  CodeBlockTheme
+  CodeBlockTheme,
+  CodeBlockThemeValues
 } from "./atlassianWikiMarkupRenderer";
 
-export { AtlassianSupportLanguage } from "./language";
+export {
+  AtlassianSupportLanguage,
+  AtlassianSupportLanguageValues
+} from "./language";
 
 export const markdownToAtlassianWikiMarkup = (
   markdown: string,

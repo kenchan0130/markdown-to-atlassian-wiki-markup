@@ -3,44 +3,56 @@ import { Renderer, Slugger } from "marked";
 
 import {
   AtlassianSupportLanguage,
+  AtlassianSupportLanguageValues,
   markdownToWikiMarkupLanguageMapping
 } from "./language";
-import { ValueOf } from "./valueOf";
 
-export enum CodeBlockTheme {
-  DJango = "DJango",
-  Emacs = "Emacs",
-  FadeToGrey = "FadeToGrey",
-  Midnight = "Midnight",
-  RDark = "RDark",
-  Eclipse = "Eclipse",
-  Confluence = "Confluence"
-}
+type CodeBlockTheme = {
+  DJango: "DJango";
+  Emacs: "Emacs";
+  FadeToGrey: "FadeToGrey";
+  Midnight: "Midnight";
+  RDark: "RDark";
+  Eclipse: "Eclipse";
+  Confluence: "Confluence";
+};
+export const CodeBlockTheme: CodeBlockTheme = {
+  DJango: "DJango",
+  Emacs: "Emacs",
+  FadeToGrey: "FadeToGrey",
+  Midnight: "Midnight",
+  RDark: "RDark",
+  Eclipse: "Eclipse",
+  Confluence: "Confluence"
+};
+export type CodeBlockThemeValues = CodeBlockTheme[keyof CodeBlockTheme];
 
 export type MarkdownToAtlassianWikiMarkupOptions = {
   codeBlock?: {
-    theme?: CodeBlockTheme;
+    theme?: CodeBlockThemeValues;
     showLineNumbers?:
       | boolean
-      | ((
-          code: string,
-          lang: ValueOf<typeof AtlassianSupportLanguage>
-        ) => boolean);
+      | ((code: string, lang: AtlassianSupportLanguageValues) => boolean);
     collapse?:
       | boolean
-      | ((
-          code: string,
-          lang: ValueOf<typeof AtlassianSupportLanguage>
-        ) => boolean);
+      | ((code: string, lang: AtlassianSupportLanguageValues) => boolean);
   };
 };
 
-const ListHeadCharacter = {
+type ListHeadCharacter = {
+  Numbered: "#";
+  Bullet: "*";
+};
+const ListHeadCharacter: ListHeadCharacter = {
   Numbered: "#",
   Bullet: "*"
 };
 
-const TableCellTypeCharacter = {
+type TableCellTypeCharacter = {
+  Header: "||";
+  NonHeader: "|";
+};
+const TableCellTypeCharacter: TableCellTypeCharacter = {
   Header: "||",
   NonHeader: "|"
 };
@@ -198,7 +210,7 @@ export class AtlassianWikiMarkupRenderer extends Renderer {
     const removedEscapePipe = content.trim().replace("\\|", "");
     const twoPipeMatch = removedEscapePipe.match(/\|\|(?!.*\|\|)/);
     const onePipeMatch = removedEscapePipe.match(/\|(?!.*\|)/);
-    const rowCloseType = ((): ValueOf<typeof TableCellTypeCharacter> => {
+    const rowCloseType = ((): TableCellTypeCharacter[keyof TableCellTypeCharacter] => {
       if (!onePipeMatch || !onePipeMatch.index) {
         throw new Error(
           "The table row expects at least one '|' in the table cell."
@@ -285,7 +297,6 @@ export class AtlassianWikiMarkupRenderer extends Renderer {
       .sort((a, b): number => (a[0] > b[0] ? 1 : -1))
       .map(([key, value]): string => `${key}=${value}`)
       .join("|");
-
     return `{code:${paramsString}}\n${code}\n{code}\n\n`;
   }
 }

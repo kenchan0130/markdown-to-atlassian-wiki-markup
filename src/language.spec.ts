@@ -4,7 +4,7 @@ import { immutable as uniq } from "array-unique";
 
 import {
   AtlassianSupportLanguage,
-  GitHubFlaveredMarddownCodeBlockLanguage,
+  GitHubFlaveredMarkdownCodeBlockLanguageMapping,
   markdownToWikiMarkupLanguageMapping
 } from "./language";
 
@@ -24,10 +24,10 @@ describe("AtlassianSupportLanguage", (): void => {
   });
 });
 
-describe("GitHubFlaveredMarddownCodeBlockLanguage", (): void => {
+describe("GitHubFlaveredMarkdownCodeBlockLanguageMapping", (): void => {
   describe("enum values", (): void => {
     const enumFlattenValues = Object.values(
-      GitHubFlaveredMarddownCodeBlockLanguage
+      GitHubFlaveredMarkdownCodeBlockLanguageMapping
     ).flat();
 
     it("should be uniq", (): void => {
