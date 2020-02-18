@@ -1,6 +1,8 @@
-import { CodeBlockTheme, markdownToAtlassianWikiMarkup } from "./index";
-import { AtlassianSupportLanguage } from "./language";
-import { ValueOf } from "./valueOf";
+import {
+  CodeBlockTheme,
+  markdownToAtlassianWikiMarkup,
+  AtlassianSupportLanguageValues
+} from "./index";
 
 describe("markdownToAtlassianWikiMarkup", (): void => {
   const paragraphNewLinesAtTail = "\n\n";
@@ -452,10 +454,8 @@ helloWorld();
         codeBlock: {
           showLineNumbers: (
             _code: string,
-            _lang: ValueOf<typeof AtlassianSupportLanguage>
-          ): boolean => {
-            return true;
-          }
+            _lang: AtlassianSupportLanguageValues
+          ): boolean => true
         }
       };
 
@@ -506,10 +506,8 @@ helloWorld();
         codeBlock: {
           collapse: (
             _code: string,
-            _lang: ValueOf<typeof AtlassianSupportLanguage>
-          ): boolean => {
-            return true;
-          }
+            _lang: AtlassianSupportLanguageValues
+          ): boolean => true
         }
       };
 
