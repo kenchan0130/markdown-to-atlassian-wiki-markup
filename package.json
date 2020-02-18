@@ -4,10 +4,13 @@
   "description": "Convert markdown to atlassian wiki markup",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
+    "clean": "rimraf dist/",
+    "build": "run-s clean build:tsc",
+    "build:tsc": "tsc",
     "lint": "eslint --max-warnings=0 src/**/*.ts",
     "lint:fix": "eslint --fix src/**/*.ts",
-    "test": "jest",
+    "test": "run-s clean test:jest",
+    "test:jest": "jest",
     "preversion": "[ \"$(git symbolic-ref --short HEAD)\" != master ] || [ -n \"$(git status --porcelain)\" ] && exit 1 || true",
     "postversion": "git push origin $(git describe --abbrev=0 --tags) && git push origin master"
   },
@@ -49,7 +52,9 @@
     "eslint-plugin-jest": "^23.0.2",
     "eslint-plugin-prettier": "^3.1.1",
     "jest": "^24.8.0",
+    "npm-run-all": "^4.1.5",
     "prettier": "^1.18.2",
+    "rimraf": "^3.0.2",
     "ts-jest": "^24.0.2",
     "typescript": "^3.5.3"
   },
