@@ -1,7 +1,7 @@
 # @kenchan0130/markdown-to-atlassian-wiki-markup
 
 [![NPM version][npm-image]][npm-url]
-[![Build status][travis-image]][travis-url]
+[![Build status][github-actions-image]][github-actions-url]
 [![dep][dep-image]][dev-dep-url]
 [![dev dep][dev-dep-image]][dev-dep-url]
 [![snyk][snyk-image]][snyk-url]
@@ -10,8 +10,8 @@
 [npm-image]: https://img.shields.io/npm/v/@kenchan0130/markdown-to-atlassian-wiki-markup.svg
 [npm-url]: https://www.npmjs.com/package/@kenchan0130/markdown-to-atlassian-wiki-markup
 
-[travis-image]: https://badgen.net/travis/kenchan0130/markdown-to-atlassian-wiki-markup
-[travis-url]: https://travis-ci.org/kenchan0130/markdown-to-atlassian-wiki-markup
+[github-actions-image]: https://github.com/kenchan0130/markdown-to-atlassian-wiki-markup/workflows/Node.js%20CI/badge.svg
+[github-actions-url]: https://github.com/kenchan0130/markdown-to-atlassian-wiki-markup/actions?query=workflow%3A%22Node.js+CI%22
 
 [dep-image]: https://badgen.net/david/dep/kenchan0130/markdown-to-atlassian-wiki-markup?label=deps
 [dep-url]: https://david-dm.org/kenchan0130/markdown-to-atlassian-wiki-markup
