@@ -1,7 +1,7 @@
 import {
+  AtlassianSupportLanguageValues,
   CodeBlockTheme,
   markdownToAtlassianWikiMarkup,
-  AtlassianSupportLanguageValues
 } from "./index";
 
 describe("markdownToAtlassianWikiMarkup", (): void => {
@@ -331,13 +331,14 @@ ___`;
       const markdown = `header1|header2
 ---|---
 row1, col1|row1, col2
+|
 row2, col1|row2, col2
 `;
       const expected = `
 ||header1||header2||
 |row1, col1|row1, col2|
+|\u{0020}|\u{0020}|
 |row2, col1|row2, col2|
-
 `;
       const rendered = markdownToAtlassianWikiMarkup(markdown);
       expect(rendered).toBe(expected);
@@ -395,8 +396,8 @@ describe("markdownToAtlassianWikiMarkup Options", (): void => {
       const theme = CodeBlockTheme.Midnight;
       const options = {
         codeBlock: {
-          theme: theme
-        }
+          theme: theme,
+        },
       };
 
       const markdown = `
@@ -433,8 +434,8 @@ helloWorld();
     it("should use specified code block used linenumber or not", (): void => {
       const options = {
         codeBlock: {
-          showLineNumbers: true
-        }
+          showLineNumbers: true,
+        },
       };
 
       const expected = `{code:collapse=false|language=javascript|linenumbers=true|theme=Confluence}
@@ -455,8 +456,8 @@ helloWorld();
           showLineNumbers: (
             _code: string,
             _lang: AtlassianSupportLanguageValues
-          ): boolean => true
-        }
+          ): boolean => true,
+        },
       };
 
       const expected = `{code:collapse=false|language=javascript|linenumbers=true|theme=Confluence}
@@ -485,8 +486,8 @@ helloWorld();
     it("should use specified code block used collapse or not", (): void => {
       const options = {
         codeBlock: {
-          collapse: true
-        }
+          collapse: true,
+        },
       };
 
       const expected = `{code:collapse=true|language=javascript|linenumbers=false|theme=Confluence}
@@ -507,8 +508,8 @@ helloWorld();
           collapse: (
             _code: string,
             _lang: AtlassianSupportLanguageValues
-          ): boolean => true
-        }
+          ): boolean => true,
+        },
       };
 
       const expected = `{code:collapse=true|language=javascript|linenumbers=false|theme=Confluence}

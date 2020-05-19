@@ -5,7 +5,7 @@ import { immutable as uniq } from "array-unique";
 import {
   AtlassianSupportLanguage,
   GitHubFlaveredMarkdownCodeBlockLanguageMapping,
-  markdownToWikiMarkupLanguageMapping
+  markdownToWikiMarkupLanguageMapping,
 } from "./language";
 
 describe("AtlassianSupportLanguage", (): void => {

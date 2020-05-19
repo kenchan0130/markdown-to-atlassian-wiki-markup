@@ -74,7 +74,7 @@ export const AtlassianSupportLanguage: AtlassianSupportLanguage = {
   Swift: "swift",
   VisualBasic: "visualbasic",
   XML: "xml",
-  YAML: "yaml"
+  YAML: "yaml",
 };
 
 type GitHubFlaveredMarkdownCodeBlockLanguageMapping = {
@@ -102,7 +102,7 @@ export const GitHubFlaveredMarkdownCodeBlockLanguageMapping: GitHubFlaveredMarkd
     "shell-script",
     "shellsession",
     "tcsh",
-    "zsh"
+    "zsh",
   ],
   C: ["c"],
   CSharp: ["c#", "csharp", "eq", "uno"],
@@ -136,7 +136,7 @@ export const GitHubFlaveredMarkdownCodeBlockLanguageMapping: GitHubFlaveredMarkd
     "xc",
     "xdr",
     "xpm",
-    "xs"
+    "xs",
   ],
   CSS: ["css"],
   Erlang: ["erlang"],
@@ -152,7 +152,7 @@ export const GitHubFlaveredMarkdownCodeBlockLanguageMapping: GitHubFlaveredMarkd
     "gf",
     "grammatical framework",
     "haskell",
-    "purescript"
+    "purescript",
   ],
   HTML: ["html", "kit", "mtml", "riot", "svelte", "vue", "xhtml"],
   Java: ["apex", "chuck", "jasmin", "java", "unrealscript"],
@@ -167,7 +167,7 @@ export const GitHubFlaveredMarkdownCodeBlockLanguageMapping: GitHubFlaveredMarkd
     "jsonld",
     "jsx",
     "node",
-    "tsx"
+    "tsx",
   ],
   JSON: [
     "ecere projects",
@@ -176,7 +176,7 @@ export const GitHubFlaveredMarkdownCodeBlockLanguageMapping: GitHubFlaveredMarkd
     "jupyter notebook",
     "max",
     "max/msp",
-    "maxmsp"
+    "maxmsp",
   ],
   Lua: ["lua", "terra"],
   Nyan: ["nyan"], // Not support in GitHub
@@ -188,7 +188,7 @@ export const GitHubFlaveredMarkdownCodeBlockLanguageMapping: GitHubFlaveredMarkd
     "objective-c",
     "objective-c++",
     "objectivec",
-    "objectivec++"
+    "objectivec++",
   ],
   Perl: ["cperl", "perl", "perl-6", "perl6", "pod", "pod 6", "raku"],
   PHP: ["hack", "html+php", "inc", "php", "zephir"],
@@ -204,7 +204,7 @@ export const GitHubFlaveredMarkdownCodeBlockLanguageMapping: GitHubFlaveredMarkd
     "renpy",
     "rusthon",
     "sage",
-    "starlark"
+    "starlark",
   ],
   R: ["r", "rscript", "splus"],
   Ruby: [
@@ -217,7 +217,7 @@ export const GitHubFlaveredMarkdownCodeBlockLanguageMapping: GitHubFlaveredMarkd
     "rb",
     "rbx",
     "ruby",
-    "terraform"
+    "terraform",
   ],
   Sass: ["sass", "scss"],
   Scala: ["scala"],
@@ -231,7 +231,7 @@ export const GitHubFlaveredMarkdownCodeBlockLanguageMapping: GitHubFlaveredMarkd
     "visual basic .net",
     "vbnet",
     "vb .net",
-    "vb.net"
+    "vb.net",
   ],
   XML: [
     "ant build system",
@@ -252,7 +252,7 @@ export const GitHubFlaveredMarkdownCodeBlockLanguageMapping: GitHubFlaveredMarkd
     "xproc",
     "xsd",
     "xsl",
-    "xslt"
+    "xslt",
   ],
   YAML: [
     "common workflow language",
@@ -265,8 +265,8 @@ export const GitHubFlaveredMarkdownCodeBlockLanguageMapping: GitHubFlaveredMarkd
     "spline font database",
     "unity3d asset",
     "yaml",
-    "yml"
-  ]
+    "yml",
+  ],
 };
 
 export const markdownToWikiMarkupLanguageMapping: Map<
@@ -275,11 +275,11 @@ export const markdownToWikiMarkupLanguageMapping: Map<
 > = new Map(
   Object.entries(GitHubFlaveredMarkdownCodeBlockLanguageMapping).flatMap(
     ([key, langs]) => {
-      return langs.map(v => [
+      return langs.map((v) => [
         v,
         AtlassianSupportLanguage[
           key as keyof GitHubFlaveredMarkdownCodeBlockLanguageMapping
-        ]
+        ],
       ]);
     }
   )

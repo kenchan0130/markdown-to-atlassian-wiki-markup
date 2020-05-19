@@ -4,7 +4,7 @@ import { Renderer, Slugger } from "marked";
 import {
   AtlassianSupportLanguage,
   AtlassianSupportLanguageValues,
-  markdownToWikiMarkupLanguageMapping
+  markdownToWikiMarkupLanguageMapping,
 } from "./language";
 
 type CodeBlockTheme = {
@@ -23,7 +23,7 @@ export const CodeBlockTheme: CodeBlockTheme = {
   Midnight: "Midnight",
   RDark: "RDark",
   Eclipse: "Eclipse",
-  Confluence: "Confluence"
+  Confluence: "Confluence",
 };
 export type CodeBlockThemeValues = CodeBlockTheme[keyof CodeBlockTheme];
 
@@ -45,7 +45,7 @@ type ListHeadCharacter = {
 };
 const ListHeadCharacter: ListHeadCharacter = {
   Numbered: "#",
-  Bullet: "*"
+  Bullet: "*",
 };
 
 type TableCellTypeCharacter = {
@@ -54,13 +54,11 @@ type TableCellTypeCharacter = {
 };
 const TableCellTypeCharacter: TableCellTypeCharacter = {
   Header: "||",
-  NonHeader: "|"
+  NonHeader: "|",
 };
 
 const confluenceListRegExp = new RegExp(
-  `^(${Object.values(ListHeadCharacter)
-    .map(escapeStringRegexp)
-    .join("|")})`
+  `^(${Object.values(ListHeadCharacter).map(escapeStringRegexp).join("|")})`
 );
 
 const unescapeHtmlSpecialCharacteres = (text: string): string => {
@@ -188,7 +186,7 @@ export class AtlassianWikiMarkupRenderer extends Renderer {
   public image(href: string, title: string | null, text: string): string {
     const params = {
       alt: text,
-      title: title
+      title: title,
     };
     const paramsString = Object.entries(params)
       .filter(([, value]): boolean => {
@@ -203,21 +201,22 @@ export class AtlassianWikiMarkupRenderer extends Renderer {
   }
 
   public table(header: string, body: string): string {
-    return `\n${header}${body}\n`;
+    const tableContent = `${header}${body}`.trim();
+    return `\n${tableContent}\n`;
   }
 
   public tablerow(content: string): string {
-    const removedEscapePipe = content.trim().replace("\\|", "");
+    const removedEscapePipe = content.replace("\\|", "");
     const twoPipeMatch = removedEscapePipe.match(/\|\|(?!.*\|\|)/);
     const onePipeMatch = removedEscapePipe.match(/\|(?!.*\|)/);
     const rowCloseType = ((): TableCellTypeCharacter[keyof TableCellTypeCharacter] => {
-      if (!onePipeMatch || !onePipeMatch.index) {
+      if (!onePipeMatch?.index) {
         throw new Error(
           "The table row expects at least one '|' in the table cell."
         );
       }
 
-      if (twoPipeMatch && twoPipeMatch.index) {
+      if (twoPipeMatch?.index) {
         const indexDiff = onePipeMatch.index - twoPipeMatch.index;
         return indexDiff === 1
           ? TableCellTypeCharacter.Header
@@ -240,8 +239,8 @@ export class AtlassianWikiMarkupRenderer extends Renderer {
     const type = flags.header
       ? TableCellTypeCharacter.Header
       : TableCellTypeCharacter.NonHeader;
-
-    return `${type}${content}`;
+    const emptyComplementedContent = content === "" ? "\u{0020}" : content;
+    return `${type}${emptyComplementedContent}`;
   }
 
   public code(
@@ -290,7 +289,7 @@ export class AtlassianWikiMarkupRenderer extends Renderer {
       language: usingLang,
       theme: theme,
       linenumbers: isDisplayLinenumbers,
-      collapse: isCollapseCodeBlock
+      collapse: isCollapseCodeBlock,
     };
     const paramsString = Object.entries(params)
       // Sort by key to prevent the order from changing in the way of defining params

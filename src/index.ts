@@ -2,19 +2,19 @@ import marked from "marked";
 
 import {
   AtlassianWikiMarkupRenderer,
-  MarkdownToAtlassianWikiMarkupOptions
+  MarkdownToAtlassianWikiMarkupOptions,
 } from "./atlassianWikiMarkupRenderer";
 
 export {
   AtlassianWikiMarkupRenderer,
   MarkdownToAtlassianWikiMarkupOptions,
   CodeBlockTheme,
-  CodeBlockThemeValues
+  CodeBlockThemeValues,
 } from "./atlassianWikiMarkupRenderer";
 
 export {
   AtlassianSupportLanguage,
-  AtlassianSupportLanguageValues
+  AtlassianSupportLanguageValues,
 } from "./language";
 
 export const markdownToAtlassianWikiMarkup = (
