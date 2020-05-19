@@ -1,3 +1,4 @@
 {
-    "autoimport.filesToScan": "src/**/*.{ts,tsx}"
+  "autoimport.filesToScan": "src/**/*.{ts,tsx}",
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
