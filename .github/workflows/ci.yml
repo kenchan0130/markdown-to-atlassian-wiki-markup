@@ -2,9 +2,10 @@ name: Node.js CI
 on:
   push:
     branches:
-      - "*"
+      - master
     tags:
       - "!*"
+  pull_request:
 
 jobs:
   ubuntu-build:
