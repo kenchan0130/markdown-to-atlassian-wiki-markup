@@ -31,11 +31,11 @@ export type MarkdownToAtlassianWikiMarkupOptions = {
   codeBlock?: {
     theme?: CodeBlockThemeValues;
     showLineNumbers?:
-    | boolean
-    | ((code: string, lang: AtlassianSupportLanguageValues) => boolean);
+      | boolean
+      | ((code: string, lang: AtlassianSupportLanguageValues) => boolean);
     collapse?:
-    | boolean
-    | ((code: string, lang: AtlassianSupportLanguageValues) => boolean);
+      | boolean
+      | ((code: string, lang: AtlassianSupportLanguageValues) => boolean);
   };
 };
 
@@ -256,7 +256,7 @@ export class AtlassianWikiMarkupRenderer extends Renderer {
 
     const usingLang = language
       ? markdownToWikiMarkupLanguageMapping.get(language.toLowerCase()) ||
-      AtlassianSupportLanguage.None
+        AtlassianSupportLanguage.None
       : AtlassianSupportLanguage.None;
 
     const isDisplayLinenumbers = ((): boolean => {
