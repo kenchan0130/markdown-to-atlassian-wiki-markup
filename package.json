@@ -34,6 +34,12 @@
     "Markdown",
     "Wiki markup"
   ],
+  "files": [
+    "dist",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ],
   "dependencies": {
     "@types/marked": "^0.7.0",
     "escape-string-regexp": "^4.0.0",

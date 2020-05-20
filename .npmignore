@@ -1,6 +1,0 @@
-src
-node_modules
-.eslintrc*
-.travis.yml
-tsconfig.*
-.vscode
