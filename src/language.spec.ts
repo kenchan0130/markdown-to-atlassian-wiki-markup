@@ -8,15 +8,15 @@ import {
   markdownToWikiMarkupLanguageMapping,
 } from "./language";
 
-describe("AtlassianSupportLanguage", (): void => {
-  describe("enum values", (): void => {
+describe("AtlassianSupportLanguage", () => {
+  describe("enum values", () => {
     const enumValues = Object.values(AtlassianSupportLanguage);
 
-    it("should be uniq", (): void => {
+    it("should be uniq", () => {
       expect(enumValues).toEqual(uniq(enumValues));
     });
 
-    it("should not contain at least one capital letter", (): void => {
+    it("should not contain at least one capital letter", () => {
       expect(enumValues).toEqual(
         expect.arrayContaining([expect.not.stringMatching(/[A-Z]/)])
       );
@@ -24,17 +24,17 @@ describe("AtlassianSupportLanguage", (): void => {
   });
 });
 
-describe("GitHubFlaveredMarkdownCodeBlockLanguageMapping", (): void => {
-  describe("enum values", (): void => {
+describe("GitHubFlaveredMarkdownCodeBlockLanguageMapping", () => {
+  describe("enum values", () => {
     const enumFlattenValues = Object.values(
       GitHubFlaveredMarkdownCodeBlockLanguageMapping
     ).flat();
 
-    it("should be uniq", (): void => {
+    it("should be uniq", () => {
       expect(enumFlattenValues).toEqual(uniq(enumFlattenValues));
     });
 
-    it("should not contain at least one capital letter", (): void => {
+    it("should not contain at least one capital letter", () => {
       expect(enumFlattenValues).toEqual(
         expect.arrayContaining([expect.not.stringMatching(/[A-Z]/)])
       );
@@ -42,9 +42,9 @@ describe("GitHubFlaveredMarkdownCodeBlockLanguageMapping", (): void => {
   });
 });
 
-describe("markdownToWikiMarkupLanguageMapping", (): void => {
-  describe("supported github flaver markdown and atlassian wiki code blocklanguage", (): void => {
-    it("should return atlassian wiki markup language", (): void => {
+describe("markdownToWikiMarkupLanguageMapping", () => {
+  describe("supported github flaver markdown and atlassian wiki code blocklanguage", () => {
+    it("should return atlassian wiki markup language", () => {
       const supportedLanguage = "osascript";
       expect(
         markdownToWikiMarkupLanguageMapping.get(supportedLanguage)
@@ -52,8 +52,8 @@ describe("markdownToWikiMarkupLanguageMapping", (): void => {
     });
   });
 
-  describe("non supported github flaver markdown and atlassian wiki code block language", (): void => {
-    it("should return undefined", (): void => {
+  describe("non supported github flaver markdown and atlassian wiki code block language", () => {
+    it("should return undefined", () => {
       const nonSupportedLanguage = "tex";
 
       expect(

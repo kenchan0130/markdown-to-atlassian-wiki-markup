@@ -4,11 +4,11 @@ import {
   markdownToAtlassianWikiMarkup,
 } from "./index";
 
-describe("markdownToAtlassianWikiMarkup", (): void => {
+describe("markdownToAtlassianWikiMarkup", () => {
   const paragraphNewLinesAtTail = "\n\n";
 
-  describe("Paragraph", (): void => {
-    it("should render with two new lines", (): void => {
+  describe("Paragraph", () => {
+    it("should render with two new lines", () => {
       const markdown = `This is first paragraph.
 
 This is second paragraph.`;
@@ -19,8 +19,8 @@ This is second paragraph.${paragraphNewLinesAtTail}`;
       expect(rendered).toBe(expected);
     });
 
-    describe("HTML special characters", (): void => {
-      it("should not be escaped", (): void => {
+    describe("HTML special characters", () => {
+      it("should not be escaped", () => {
         const markdown = "\" & : < > '";
         const expected = `" & : < > '${paragraphNewLinesAtTail}`;
         const rendered = markdownToAtlassianWikiMarkup(markdown);
@@ -29,9 +29,9 @@ This is second paragraph.${paragraphNewLinesAtTail}`;
     });
   });
 
-  describe("Heading", (): void => {
-    describe("with sharpe number signs", (): void => {
-      it("should render with 'h'", (): void => {
+  describe("Heading", () => {
+    describe("with sharpe number signs", () => {
+      it("should render with 'h'", () => {
         const markdown = `# This is h1
 
 ## This is h2
@@ -61,8 +61,8 @@ h6. This is h6
       });
     });
 
-    describe("with alternate syntax", (): void => {
-      it("should render with 'h'", (): void => {
+    describe("with alternate syntax", () => {
+      it("should render with 'h'", () => {
         const markdown = `This is h1
 ===============
 
@@ -79,8 +79,8 @@ h2. This is h2
     });
   });
 
-  describe("Strong", (): void => {
-    it("should render sandwiched by '*'", (): void => {
+  describe("Strong", () => {
+    it("should render sandwiched by '*'", () => {
       const markdown = "**bold by asterisks** __bold by underscores__";
       const expected = `*bold by asterisks* *bold by underscores*${paragraphNewLinesAtTail}`;
       const rendered = markdownToAtlassianWikiMarkup(markdown);
@@ -88,8 +88,8 @@ h2. This is h2
     });
   });
 
-  describe("Emphasis", (): void => {
-    it("should render sandwiched by '_'", (): void => {
+  describe("Emphasis", () => {
+    it("should render sandwiched by '_'", () => {
       const markdown = "*italic by asterisks* _italic by underscores_";
       const expected = `_italic by asterisks_ _italic by underscores_${paragraphNewLinesAtTail}`;
       const rendered = markdownToAtlassianWikiMarkup(markdown);
@@ -97,8 +97,8 @@ h2. This is h2
     });
   });
 
-  describe("Del", (): void => {
-    it("should render sandwiched by '-'", (): void => {
+  describe("Del", () => {
+    it("should render sandwiched by '-'", () => {
       const markdown = "~~deleted by tildes~~";
       const expected = `-deleted by tildes-${paragraphNewLinesAtTail}`;
       const rendered = markdownToAtlassianWikiMarkup(markdown);
@@ -106,8 +106,8 @@ h2. This is h2
     });
   });
 
-  describe("Code Span", (): void => {
-    it("should render sandwiched by '{{' and '}}'", (): void => {
+  describe("Code Span", () => {
+    it("should render sandwiched by '{{' and '}}'", () => {
       const markdown = "`code span by backticks`";
       const expected = `{{code span by backticks}}${paragraphNewLinesAtTail}`;
       const rendered = markdownToAtlassianWikiMarkup(markdown);
@@ -115,8 +115,8 @@ h2. This is h2
     });
   });
 
-  describe("Blockquote", (): void => {
-    it("should render sandwiched by '{quote}'", (): void => {
+  describe("Blockquote", () => {
+    it("should render sandwiched by '{quote}'", () => {
       const markdown = `> This is quote first line.
 This is quote second line.
 `;
@@ -127,8 +127,8 @@ This is quote second line.{quote}`;
     });
   });
 
-  describe("Hard Line Breaks", (): void => {
-    it("should render with new line", (): void => {
+  describe("Hard Line Breaks", () => {
+    it("should render with new line", () => {
       const markdown = `This is new line first.\\
 This is new line second.`;
       const expected = `This is new line first.
@@ -138,8 +138,8 @@ This is new line second.${paragraphNewLinesAtTail}`;
     });
   });
 
-  describe("Horizontal Rule", (): void => {
-    it("should render four minuses", (): void => {
+  describe("Horizontal Rule", () => {
+    it("should render four minuses", () => {
       const markdown = `---
 ***
 ___`;
@@ -152,9 +152,9 @@ ___`;
     });
   });
 
-  describe("Link", (): void => {
-    describe("with text", (): void => {
-      it("should render sandwiched by '[' and ']' with text", (): void => {
+  describe("Link", () => {
+    describe("with text", () => {
+      it("should render sandwiched by '[' and ']' with text", () => {
         const markdown = "[This is text](http://example.com)";
         const expected = `[This is text|http://example.com]${paragraphNewLinesAtTail}`;
         const rendered = markdownToAtlassianWikiMarkup(markdown);
@@ -162,8 +162,8 @@ ___`;
       });
     });
 
-    describe("without text and title", (): void => {
-      it("should render sandwiched by '[' and ']'", (): void => {
+    describe("without text and title", () => {
+      it("should render sandwiched by '[' and ']'", () => {
         const markdown = "[](http://example.com)";
         const expected = `[http://example.com]${paragraphNewLinesAtTail}`;
         const rendered = markdownToAtlassianWikiMarkup(markdown);
@@ -171,8 +171,8 @@ ___`;
       });
     });
 
-    describe("with title", (): void => {
-      it("should render sandwiched by '[' and ']' with text", (): void => {
+    describe("with title", () => {
+      it("should render sandwiched by '[' and ']' with text", () => {
         const markdown = "[](http://example.com 'This is title')";
         const expected = `[This is title|http://example.com]${paragraphNewLinesAtTail}`;
         const rendered = markdownToAtlassianWikiMarkup(markdown);
@@ -180,8 +180,8 @@ ___`;
       });
     });
 
-    describe("without text", (): void => {
-      it("should render sandwiched by '[' and ']'", (): void => {
+    describe("without text", () => {
+      it("should render sandwiched by '[' and ']'", () => {
         const markdown = "[](http://example.com)";
         const expected = `[http://example.com]${paragraphNewLinesAtTail}`;
         const rendered = markdownToAtlassianWikiMarkup(markdown);
@@ -189,8 +189,8 @@ ___`;
       });
     });
 
-    describe("with text and title", (): void => {
-      it("should render sandwiched by '[' and ']' and prioritize text", (): void => {
+    describe("with text and title", () => {
+      it("should render sandwiched by '[' and ']' and prioritize text", () => {
         const markdown = "[This is text](http://example.com 'This is title')";
         const expected = `[This is text|http://example.com]${paragraphNewLinesAtTail}`;
         const rendered = markdownToAtlassianWikiMarkup(markdown);
@@ -199,9 +199,9 @@ ___`;
     });
   });
 
-  describe("List and List Item", (): void => {
-    describe("bullet list", (): void => {
-      it("should render list with asterisks", (): void => {
+  describe("List and List Item", () => {
+    describe("bullet list", () => {
+      it("should render list with asterisks", () => {
         const markdown = `- This is list 1
 - This is list 2
     - This is list 2-1
@@ -222,8 +222,8 @@ ___`;
       });
     });
 
-    describe("numbered list", (): void => {
-      it("should render list with sharps", (): void => {
+    describe("numbered list", () => {
+      it("should render list with sharps", () => {
         const markdown = `1. This is list 1
 2. This is list 2
     1. This is list 2-1
@@ -244,8 +244,8 @@ ___`;
       });
     });
 
-    describe("bullet and numbered list", (): void => {
-      it("should render list with sterisks and sharps", (): void => {
+    describe("bullet and numbered list", () => {
+      it("should render list with sterisks and sharps", () => {
         const markdown = `1. This is list 1
 2. This is list 2
     - This is list 2-1
@@ -263,8 +263,8 @@ ___`;
     });
   });
 
-  describe("Checkbox", (): void => {
-    it("should render blank", (): void => {
+  describe("Checkbox", () => {
+    it("should render blank", () => {
       const markdown = `- [ ] This is checkbox without checked
 - [x] This is checkbox with checked`;
       const expected = `
@@ -277,9 +277,9 @@ ___`;
     });
   });
 
-  describe("Image", (): void => {
-    describe("without description", (): void => {
-      it("should render sandwiched by '!'", (): void => {
+  describe("Image", () => {
+    describe("without description", () => {
+      it("should render sandwiched by '!'", () => {
         const markdown = "![](http://exmaple.com/example.png)";
         const expected = `!http://exmaple.com/example.png!${paragraphNewLinesAtTail}`;
         const rendered = markdownToAtlassianWikiMarkup(markdown);
@@ -287,8 +287,8 @@ ___`;
       });
     });
 
-    describe("with description", (): void => {
-      it("should render sandwiched by '!' with description as alt", (): void => {
+    describe("with description", () => {
+      it("should render sandwiched by '!' with description as alt", () => {
         const markdown =
           "![This is description](http://exmaple.com/example.png)";
         const expected = `!http://exmaple.com/example.png|alt=This is description!${paragraphNewLinesAtTail}`;
@@ -297,8 +297,8 @@ ___`;
       });
     });
 
-    describe("without title", (): void => {
-      it("should render sandwiched by '!'", (): void => {
+    describe("without title", () => {
+      it("should render sandwiched by '!'", () => {
         const markdown = "![](http://exmaple.com/example.png)";
         const expected = `!http://exmaple.com/example.png!${paragraphNewLinesAtTail}`;
         const rendered = markdownToAtlassianWikiMarkup(markdown);
@@ -306,8 +306,8 @@ ___`;
       });
     });
 
-    describe("with title", (): void => {
-      it("should render sandwiched by '!' with title", (): void => {
+    describe("with title", () => {
+      it("should render sandwiched by '!' with title", () => {
         const markdown = "![](http://exmaple.com/example.png 'This is title')";
         const expected = `!http://exmaple.com/example.png|title=This is title!${paragraphNewLinesAtTail}`;
         const rendered = markdownToAtlassianWikiMarkup(markdown);
@@ -315,8 +315,8 @@ ___`;
       });
     });
 
-    describe("with multiple params", (): void => {
-      it("should render sandwiched by '!' and joined by ','", (): void => {
+    describe("with multiple params", () => {
+      it("should render sandwiched by '!' and joined by ','", () => {
         const markdown =
           "![This is description](http://exmaple.com/example.png 'This is title')";
         const expected = `!http://exmaple.com/example.png|alt=This is description,title=This is title!${paragraphNewLinesAtTail}`;
@@ -326,8 +326,8 @@ ___`;
     });
   });
 
-  describe("Table", (): void => {
-    it("should render header sandwiched by '||' and row sandwiched by '|'", (): void => {
+  describe("Table", () => {
+    it("should render header sandwiched by '||' and row sandwiched by '|'", () => {
       const markdown = `header1|header2
 ---|---
 row1, col1|row1, col2
@@ -345,8 +345,8 @@ row2, col1|row2, col2
     });
   });
 
-  describe("Code", (): void => {
-    it("should render sandwiched by '{code}' with parameters", (): void => {
+  describe("Code", () => {
+    it("should render sandwiched by '{code}' with parameters", () => {
       const markdown = `
 \`\`\`javascript
 const helloWorld = () => {
@@ -367,8 +367,8 @@ helloWorld();
       expect(rendered).toBe(expected);
     });
 
-    describe("when not found language", (): void => {
-      it("should render sandwiched by '{code}' with none parameter", (): void => {
+    describe("when not found language", () => {
+      it("should render sandwiched by '{code}' with none parameter", () => {
         const markdown = `
 \`\`\`pony
 actor Main
@@ -390,9 +390,9 @@ actor Main
   });
 });
 
-describe("markdownToAtlassianWikiMarkup Options", (): void => {
-  describe("codeBlockTheme", (): void => {
-    it("should use specified code block theme", (): void => {
+describe("markdownToAtlassianWikiMarkup Options", () => {
+  describe("codeBlockTheme", () => {
+    it("should use specified code block theme", () => {
       const theme = CodeBlockTheme.Midnight;
       const options = {
         codeBlock: {
@@ -421,7 +421,7 @@ helloWorld();
     });
   });
 
-  describe("showCodeBlockLineNumber", (): void => {
+  describe("showCodeBlockLineNumber", () => {
     const markdown = `
 \`\`\`javascript
 const helloWorld = () => {
@@ -431,7 +431,7 @@ helloWorld();
 \`\`\`
 `;
 
-    it("should use specified code block used linenumber or not", (): void => {
+    it("should use specified code block used linenumber or not", () => {
       const options = {
         codeBlock: {
           showLineNumbers: true,
@@ -450,7 +450,7 @@ helloWorld();
       expect(rendered).toBe(expected);
     });
 
-    it("should use specified code block used linenumber or not with function", (): void => {
+    it("should use specified code block used linenumber or not with function", () => {
       const options = {
         codeBlock: {
           showLineNumbers: (
@@ -473,7 +473,7 @@ helloWorld();
     });
   });
 
-  describe("collapse", (): void => {
+  describe("collapse", () => {
     const markdown = `
 \`\`\`javascript
 const helloWorld = () => {
@@ -483,7 +483,7 @@ helloWorld();
 \`\`\`
 `;
 
-    it("should use specified code block used collapse or not", (): void => {
+    it("should use specified code block used collapse or not", () => {
       const options = {
         codeBlock: {
           collapse: true,
@@ -502,7 +502,7 @@ helloWorld();
       expect(rendered).toBe(expected);
     });
 
-    it("should use specified code block used collapse or not with function", (): void => {
+    it("should use specified code block used collapse or not with function", () => {
       const options = {
         codeBlock: {
           collapse: (
