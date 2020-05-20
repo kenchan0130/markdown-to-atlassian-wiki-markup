@@ -31,11 +31,11 @@ export type MarkdownToAtlassianWikiMarkupOptions = {
   codeBlock?: {
     theme?: CodeBlockThemeValues;
     showLineNumbers?:
-      | boolean
-      | ((code: string, lang: AtlassianSupportLanguageValues) => boolean);
+    | boolean
+    | ((code: string, lang: AtlassianSupportLanguageValues) => boolean);
     collapse?:
-      | boolean
-      | ((code: string, lang: AtlassianSupportLanguageValues) => boolean);
+    | boolean
+    | ((code: string, lang: AtlassianSupportLanguageValues) => boolean);
   };
 };
 
@@ -64,7 +64,7 @@ const confluenceListRegExp = new RegExp(
 const unescapeHtmlSpecialCharacteres = (text: string): string => {
   return text.replace(
     /&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/gi,
-    (substring: string, matchedString: string): string => {
+    (substring: string, matchedString: string) => {
       const lowered = matchedString.toLowerCase();
       if (lowered === "colon") {
         return ":";
@@ -150,7 +150,7 @@ export class AtlassianWikiMarkupRenderer extends Renderer {
   }
 
   public link(href: string, title: string | null, text: string): string {
-    const linkAlias = text || title;
+    const linkAlias = text === "" ? title : text;
 
     return linkAlias ? `[${linkAlias}|${href}]` : `[${href}]`;
   }
@@ -159,12 +159,12 @@ export class AtlassianWikiMarkupRenderer extends Renderer {
     const lines = body
       .trim()
       .split("\n")
-      .filter((line): boolean => !!line);
+      .filter((line) => !!line);
     const type = ordered
       ? ListHeadCharacter.Numbered
       : ListHeadCharacter.Bullet;
     const joinedLine = lines
-      .map((line): string => {
+      .map((line) => {
         return line.match(confluenceListRegExp)
           ? `${type}${line}`
           : `${type} ${line}`;
@@ -189,12 +189,12 @@ export class AtlassianWikiMarkupRenderer extends Renderer {
       title: title,
     };
     const paramsString = Object.entries(params)
-      .filter(([, value]): boolean => {
+      .filter(([, value]) => {
         return value !== null && value.trim() !== "";
       })
       // Sort by key to prevent the order from changing in the way of defining params
-      .sort((a, b): number => (a[0] > b[0] ? 1 : -1))
-      .map(([key, value]): string => `${key}=${value}`)
+      .sort((a, b) => (a[0] > b[0] ? 1 : -1))
+      .map(([key, value]) => `${key}=${value}`)
       .join(",");
 
     return paramsString === "" ? `!${href}!` : `!${href}|${paramsString}!`;
@@ -256,12 +256,12 @@ export class AtlassianWikiMarkupRenderer extends Renderer {
 
     const usingLang = language
       ? markdownToWikiMarkupLanguageMapping.get(language.toLowerCase()) ||
-        AtlassianSupportLanguage.None
+      AtlassianSupportLanguage.None
       : AtlassianSupportLanguage.None;
 
     const isDisplayLinenumbers = ((): boolean => {
       const defaultValue = false;
-      if (!this.rendererOptions || !this.rendererOptions.codeBlock) {
+      if (!this.rendererOptions?.codeBlock) {
         return defaultValue;
       }
 
@@ -269,12 +269,12 @@ export class AtlassianWikiMarkupRenderer extends Renderer {
         return this.rendererOptions.codeBlock.showLineNumbers(code, usingLang);
       }
 
-      return this.rendererOptions.codeBlock.showLineNumbers || defaultValue;
+      return this.rendererOptions.codeBlock.showLineNumbers ?? defaultValue;
     })();
 
     const isCollapseCodeBlock = ((): boolean => {
       const defaultValue = false;
-      if (!this.rendererOptions || !this.rendererOptions.codeBlock) {
+      if (!this.rendererOptions?.codeBlock) {
         return defaultValue;
       }
 
@@ -282,7 +282,7 @@ export class AtlassianWikiMarkupRenderer extends Renderer {
         return this.rendererOptions.codeBlock.collapse(code, usingLang);
       }
 
-      return this.rendererOptions.codeBlock.collapse || defaultValue;
+      return this.rendererOptions.codeBlock.collapse ?? defaultValue;
     })();
 
     const params = {
@@ -293,8 +293,8 @@ export class AtlassianWikiMarkupRenderer extends Renderer {
     };
     const paramsString = Object.entries(params)
       // Sort by key to prevent the order from changing in the way of defining params
-      .sort((a, b): number => (a[0] > b[0] ? 1 : -1))
-      .map(([key, value]): string => `${key}=${value}`)
+      .sort((a, b) => (a[0] > b[0] ? 1 : -1))
+      .map(([key, value]) => `${key}=${value}`)
       .join("|");
     return `{code:${paramsString}}\n${code}\n{code}\n\n`;
   }
