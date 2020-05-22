@@ -1,4 +1,4 @@
-name: Node.js CI
+name: CI
 on:
   push:
     branches:
@@ -8,12 +8,13 @@ on:
   pull_request:
 
 jobs:
-  ubuntu-build:
-    runs-on: ubuntu-latest
-
+  build:
     strategy:
       matrix:
         node-version: [10.x, 12.x, 14.x]
+        platform: [ubuntu-latest, macos-latest, windows-latest]
+
+    runs-on: ${{ matrix.platform }}
 
     steps:
       - uses: actions/checkout@v2
@@ -35,65 +36,7 @@ jobs:
             ${{ runner.OS }}-
       - name: Install dependencies
         run: npm ci
-      - run: npm run lint
-      - run: npm run test
-
-  windows-build:
-    runs-on: windows-latest
-
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x, 14.x]
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: Get npm cache directory
-        id: npm-cache
-        run: |
-          echo "::set-output name=cache-dir::$(npm config get cache)"
-      - name: Cache Node.js modules
-        uses: actions/cache@v1
-        with:
-          path: ${{ steps.npm-cache.outputs.cache-dir }}
-          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.OS }}-node-
-            ${{ runner.OS }}-
-      - name: Install dependencies
-        run: npm ci
-      - run: npm run lint
-      - run: npm run test
-
-  macos-build:
-    runs-on: macos-latest
-
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x, 14.x]
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: Get npm cache directory
-        id: npm-cache
-        run: |
-          echo "::set-output name=cache-dir::$(npm config get cache)"
-      - name: Cache Node.js modules
-        uses: actions/cache@v1
-        with:
-          path: ${{ steps.npm-cache.outputs.cache-dir }}
-          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.OS }}-node-
-            ${{ runner.OS }}-
-      - name: Install dependencies
-        run: npm ci
-      - run: npm run lint
-      - run: npm run test
+      - name: Run lint
+        run: npm run lint
+      - name: Run test
+        run: npm run test
