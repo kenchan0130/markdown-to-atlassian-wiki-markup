@@ -83,7 +83,7 @@ const unescapeHtmlSpecialCharacteres = (text: string): string => {
       }
 
       if (lowered === "quot") {
-        return "\"";
+        return '"';
       }
 
       if (lowered.charAt(0) === "#" && lowered.charAt(1) === "x") {
