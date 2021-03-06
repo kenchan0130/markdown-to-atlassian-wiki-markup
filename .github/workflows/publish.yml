@@ -4,17 +4,46 @@ on:
     tags:
       - "v*"
 
+env:
+  node-version: "12.x"
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: kenchan0130/actions-system-info@v1.0.0
+        id: system-info
       - uses: actions/setup-node@v1
         with:
-          node-version: "12.x"
+          node-version: ${{ env.node-version }}
           registry-url: "https://registry.npmjs.org"
-      - run: npm ci
+      - name: Get npm cache directory
+        id: npm-cache
+        run: |
+          echo "::set-output name=cache-dir::$(npm config get cache)"
+      - name: Cache Node.js modules
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.npm-cache.outputs.cache-dir }}
+          key: ${{ runner.os }}-${{ steps.system-info.outputs.release }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ steps.system-info.outputs.release }}-node-
+            ${{ runner.os }}-${{ steps.system-info.outputs.release }}
+      - name: Install dependencies
+        run: npm ci
+      - run: npm run lint
       - run: npm run build
-      - run: npm publish
+      - run: npm run test
+      - name: Publish npm package to NPM registory
+        run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      - name: Override registory URL in .npmrc
+        uses: actions/setup-node@v1
+        with:
+          registry-url: "https://npm.pkg.github.com"
+      - name: Publish npm package to GitHub registory
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
