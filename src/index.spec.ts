@@ -1,8 +1,5 @@
-import {
-  AtlassianSupportLanguageValues,
-  CodeBlockTheme,
-  markdownToAtlassianWikiMarkup,
-} from "./index";
+import { AtlassianSupportLanguage } from "./language";
+import { CodeBlockTheme, markdownToAtlassianWikiMarkup } from "./index";
 
 describe("markdownToAtlassianWikiMarkup", () => {
   const paragraphNewLinesAtTail = "\n\n";
@@ -455,7 +452,7 @@ helloWorld();
         codeBlock: {
           showLineNumbers: (
             _code: string,
-            _lang: AtlassianSupportLanguageValues
+            _lang: AtlassianSupportLanguage
           ): boolean => true,
         },
       };
@@ -505,10 +502,8 @@ helloWorld();
     it("should use specified code block used collapse or not with function", () => {
       const options = {
         codeBlock: {
-          collapse: (
-            _code: string,
-            _lang: AtlassianSupportLanguageValues
-          ): boolean => true,
+          collapse: (_code: string, _lang: AtlassianSupportLanguage): boolean =>
+            true,
         },
       };
 
