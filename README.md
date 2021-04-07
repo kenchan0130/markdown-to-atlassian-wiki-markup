@@ -77,8 +77,8 @@ It has following properties.
 | namespace | key             | type                                                                                    | description                                                                                                                                                              |
 |-----------|-----------------|-----------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | codeBlock | theme           | `CodeBlockTheme` or `string`                                                            | Theme of code block.<br>See also: [https://confluence.atlassian.com/doc/code-block-macro-139390.html](https://confluence.atlassian.com/doc/code-block-macro-139390.html) |
-| codeBlock | showLineNumbers | `boolean` or `(code: string, lang: AtlassianSupportLanguageValues) => boolean` function | Show or not linenumbers of code block.                                                                                                                                   |
-| codeBlock | collapse        | `boolean` or `(code: string, lang: AtlassianSupportLanguageValues) => boolean` function | Enable or not collapse of code block.                                                                                                                                    |
+| codeBlock | showLineNumbers | `boolean` or `(code: string, lang: AtlassianSupportLanguage) => boolean` function | Show or not linenumbers of code block.                                                                                                                                   |
+| codeBlock | collapse        | `boolean` or `(code: string, lang: AtlassianSupportLanguage) => boolean` function | Enable or not collapse of code block.                                                                                                                                    |
 
 ### Options JavaScript Example
 
@@ -162,7 +162,7 @@ console.log("This is JavaScript.");
 ```
 
 ```typescript
-import { AtlassianSupportLanguage, AtlassianSupportLanguageValues, CodeBlockTheme, markdownToAtlassianWikiMarkup, MarkdownToAtlassianWikiMarkupOptions } from "@kenchan0130/markdown-to-atlassian-wiki-markup";
+import { AtlassianSupportLanguage, CodeBlockTheme, markdownToAtlassianWikiMarkup, MarkdownToAtlassianWikiMarkupOptions } from "@kenchan0130/markdown-to-atlassian-wiki-markup";
 
 const options = {
   codeBlock: {
@@ -170,12 +170,12 @@ const options = {
     // In this case, it does not display line numbers when the code lang is none.
     showLineNumbers: (
       _code: string,
-      lang: AtlassianSupportLanguageValues
+      lang: AtlassianSupportLanguage
     ): boolean => lang !== AtlassianSupportLanguage.None,
     // In this case, it makes code block collapsed when the code line number more than 10.
     collapse: (
       code: string,
-      _lang: AtlassianSupportLanguageValues
+      _lang: AtlassianSupportLanguage
     ): boolean => code.split("\n").length > 10,
   }
 });
