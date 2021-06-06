@@ -1,9 +1,10 @@
-import { immutable as uniq } from "array-unique";
 import {
   AtlassianSupportLanguage,
   GitHubFlaveredMarkdownCodeBlockLanguageMapping,
   markdownToWikiMarkupLanguageMapping,
 } from "./language";
+
+const uniq = <T>(array: Array<T>): Array<T> => [...new Set(array)];
 
 describe("AtlassianSupportLanguage", () => {
   describe("enum values", () => {
