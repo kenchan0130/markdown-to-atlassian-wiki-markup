@@ -1,9 +1,9 @@
-import { immutable as uniq } from "array-unique";
 import {
   AtlassianSupportLanguage,
   GitHubFlaveredMarkdownCodeBlockLanguageMapping,
   markdownToWikiMarkupLanguageMapping,
 } from "./language";
+import { uniq } from "./utils";
 
 describe("AtlassianSupportLanguage", () => {
   describe("enum values", () => {
