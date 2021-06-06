@@ -198,22 +198,23 @@ export class AtlassianWikiMarkupRenderer extends Renderer {
     const removedEscapePipe = content.replace("\\|", "");
     const twoPipeMatch = removedEscapePipe.match(/\|\|(?!.*\|\|)/);
     const onePipeMatch = removedEscapePipe.match(/\|(?!.*\|)/);
-    const rowCloseType = ((): TableCellTypeCharacter[keyof TableCellTypeCharacter] => {
-      if (!onePipeMatch?.index) {
-        throw new Error(
-          "The table row expects at least one '|' in the table cell."
-        );
-      }
+    const rowCloseType =
+      ((): TableCellTypeCharacter[keyof TableCellTypeCharacter] => {
+        if (!onePipeMatch?.index) {
+          throw new Error(
+            "The table row expects at least one '|' in the table cell."
+          );
+        }
 
-      if (twoPipeMatch?.index) {
-        const indexDiff = onePipeMatch.index - twoPipeMatch.index;
-        return indexDiff === 1
-          ? TableCellTypeCharacter.Header
-          : TableCellTypeCharacter.NonHeader;
-      }
+        if (twoPipeMatch?.index) {
+          const indexDiff = onePipeMatch.index - twoPipeMatch.index;
+          return indexDiff === 1
+            ? TableCellTypeCharacter.Header
+            : TableCellTypeCharacter.NonHeader;
+        }
 
-      return TableCellTypeCharacter.NonHeader;
-    })();
+        return TableCellTypeCharacter.NonHeader;
+      })();
 
     return `${content}${rowCloseType}\n`;
   }
