@@ -1,6 +1,5 @@
 import escapeStringRegexp from "escape-string-regexp";
 import { Renderer, Slugger } from "marked";
-
 import {
   AtlassianSupportLanguage,
   markdownToWikiMarkupLanguageMapping,
@@ -15,7 +14,7 @@ export const CodeBlockTheme = {
   Eclipse: "Eclipse",
   Confluence: "Confluence",
 } as const;
-type CodeBlockTheme = typeof CodeBlockTheme[keyof typeof CodeBlockTheme];
+export type CodeBlockTheme = typeof CodeBlockTheme[keyof typeof CodeBlockTheme];
 
 export type MarkdownToAtlassianWikiMarkupOptions = {
   codeBlock?: {
