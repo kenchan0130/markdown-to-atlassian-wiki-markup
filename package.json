@@ -43,8 +43,7 @@
   "dependencies": {
     "@types/marked": "latest",
     "escape-string-regexp": "latest",
-    "marked": "latest",
-    "ts-polyfill": "latest"
+    "marked": "latest"
   },
   "devDependencies": {
     "@types/array-unique": "latest",
