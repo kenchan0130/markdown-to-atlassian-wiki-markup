@@ -1,9 +1,9 @@
-import escapeStringRegexp from "escape-string-regexp";
 import { Renderer, Slugger } from "marked";
 import {
   AtlassianSupportLanguage,
   markdownToWikiMarkupLanguageMapping,
 } from "./language";
+import { escapeStringRegexp } from "./utils";
 
 export const CodeBlockTheme = {
   DJango: "DJango",

@@ -3,8 +3,7 @@ import {
   GitHubFlaveredMarkdownCodeBlockLanguageMapping,
   markdownToWikiMarkupLanguageMapping,
 } from "./language";
-
-const uniq = <T>(array: Array<T>): Array<T> => [...new Set(array)];
+import { uniq } from "./utils";
 
 describe("AtlassianSupportLanguage", () => {
   describe("enum values", () => {

@@ -42,7 +42,6 @@
   ],
   "dependencies": {
     "@types/marked": "latest",
-    "escape-string-regexp": "latest",
     "marked": "latest"
   },
   "devDependencies": {
