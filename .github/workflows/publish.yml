@@ -23,7 +23,7 @@ jobs:
         run: |
           echo "::set-output name=cache-dir::$(npm config get cache)"
       - name: Cache Node.js modules
-        uses: actions/cache@v2.1.6
+        uses: actions/cache@v2.1.7
         with:
           path: ${{ steps.npm-cache.outputs.cache-dir }}
           key: ${{ runner.os }}-${{ steps.system-info.outputs.release }}-node-${{ hashFiles('**/package-lock.json') }}
