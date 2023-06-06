@@ -40,7 +40,7 @@
     "package.json",
     "README.md"
   ],
-  "dependencies": {
+  "peerDependencies": {
     "@types/marked": "latest",
     "marked": "latest"
   },
